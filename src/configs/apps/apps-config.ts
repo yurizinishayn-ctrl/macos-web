@@ -1,5 +1,5 @@
 import { create_app_config } from '🍎/helpers/create-app-config.ts';
-
+import Safari from '$components/apps/Safari/Safari.svelte';
 const wallpapers = create_app_config({
 	title: 'Wallpapers',
 	resizable: true,
@@ -82,7 +82,13 @@ export const apps_config = {
 	vscode,
 	appstore,
 	// safari,
-
+	export const safari = {
+  id: 'safari',
+  title: 'Safari',
+  icon: 'safari',
+  component: Safari,
+  width: 900,
+  height: 600
 	// 'system-preferences': systemPreferences,
 
 	'purus-twitter': purusTwitter,
