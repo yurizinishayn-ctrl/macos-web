@@ -82,7 +82,7 @@ const systemPreferences = create_app_config({
 const purusTwitter = create_app_config({
 	title: `About the Developer`,
 	resizable: true,
-
+safari: {
 	dock_breaks_before: true,
 
 	height: 600,
@@ -114,7 +114,7 @@ export const apps_config = {
   id: 'safari',
   title: 'Safari',
   icon: 'safari',
-  component: Safari,
+  component: Safari{,
   width: 900,
   height: 600
 	// 'system-preferences': systemPreferences,
