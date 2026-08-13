@@ -1,49 +1,85 @@
 <script lang="ts">
-  let url = 'https://www.google.com/webhp?igu=1';
-  let inputUrl = 'https://www.google.com';
-  function navegar() {
-    if (inputUrl.includes('google.com')) {
-      url = 'https://www.google.com/webhp?igu=1';
-    } else {
-      url = inputUrl.startsWith('http') ? inputUrl : `https://${inputUrl}`;
+  let url = "https://www.google.com";
+  let inputUrl = "https://www.google.com";
+
+  function handleSubmit(e: SubmitEvent) {
+    e.preventDefault();
+    let target = inputUrl.trim();
+    if (!target.startsWith("http://") && !target.startsWith("https://")) {
+      target = "https://" + target;
+    }
+    url = target;
+  }
 </script>
+
 <div class="safari-container">
-  <header class="toolbar">
-    <div class="nav-buttons">
-      <button type="button">‹</button>
-      <button type="button">›</button>
-    </div>
-    <form on:submit|preventDefault={navegar} class="address-bar">
-      <input type="text" bind:value={inputUrl} placeholder="Pesquisar no Google ou digitar URL" />
+  <div class="navbar">
+    <form on:submit={handleSubmit} class="address-bar-form">
+      <input
+        type="text"
+        bind:value={inputUrl}
+        placeholder="Pesquisar ou digitar site"
+        class="address-bar"
+      />
     </form>
-  </header>
-  <iframe src={url} title="Safari Browser" class="browser-frame"></iframe>
+  </div>
+
+  <div class="content">
+    <iframe
+      src={url}
+      title="Safari Web View"
+      sandbox="allow-scripts allow-same-origin allow-forms"
+    ></iframe>
+  </div>
 </div>
+
 <style>
   .safari-container {
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
-    background-color: #ffffff;
-  .toolbar {
+    background-color: #f6f6f6;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .navbar {
     display: flex;
     align-items: center;
-    gap: 8px;
     padding: 8px 12px;
-    background-color: #f1f1f1;
-    border-bottom: 1px solid #dcdcdc;
-  .address-bar {
-    flex: 1
-  .address-bar input {
+    background-color: #e6e6e6;
+    border-bottom: 1px solid #d1d1d1;
+  }
+
+  .address-bar-form {
     width: 100%;
-    padding: 5px 10px;
+  }
+
+  .address-bar {
+    width: 100%;
+    padding: 6px 12px;
     border-radius: 6px;
     border: 1px solid #ccc;
+    background: #ffffff;
     font-size: 13px;
     outline: none;
-  .browser-frame {
+    text-align: center;
+  }
+
+  .address-bar:focus {
+    text-align: left;
+    border-color: #007aff;
+  }
+
+  .content {
     flex: 1;
     width: 100%;
+    height: 100%;
+  }
+
+  iframe {
+    width: 100%;
+    height: 100%;
     border: none;
+  }
 </style>
