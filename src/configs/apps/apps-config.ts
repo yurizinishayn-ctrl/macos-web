@@ -1,4 +1,23 @@
-import { create_app_config } from '🍎/helpers/create-app-config.ts';
+';import type { AppConfig } from '$types/app-config';
+import Safari from '$components/apps/Safari/Safari.svelte';
+
+export const appsConfig: Record<string, AppConfig> = {
+  finder: {
+    title: 'Finder',
+    resizable: true,
+    height: 500,
+    width: 700,
+  },
+  safari: {
+    title: 'Safari',
+    resizable: true,
+    height: 600,
+    width: 900,
+    component: Safari,
+  },
+};
+
+export default appsConfig;
 import Safari from '$components/apps/Safari/Safari.svelte';
 const wallpapers = create_app_config({
 	title: 'Wallpapers',
