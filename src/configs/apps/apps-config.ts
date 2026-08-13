@@ -91,7 +91,7 @@ export const apps_config = {
 	vscode,
 	appstore,
 	// safari,
-	export const safari = {
+	safari: {
   id: 'safari',
   title: 'Safari',
   icon: 'safari',
