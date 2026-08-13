@@ -1,7 +1,6 @@
-import type { AppConfig } from '$types/app-config';
 import Safari from '$components/apps/Safari/Safari.svelte';
 
-export const appsConfig: Record<string, AppConfig> = {
+export const apps_config = {
   finder: {
     id: 'finder',
     title: 'Finder',
@@ -60,4 +59,5 @@ export const appsConfig: Record<string, AppConfig> = {
   },
 };
 
-export default appsConfig;
+export const apps = apps_config;
+export default apps_config;
