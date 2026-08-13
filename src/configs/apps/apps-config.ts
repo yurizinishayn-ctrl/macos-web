@@ -59,5 +59,6 @@ export const apps_config = {
   },
 };
 
+export const appsConfig = apps_config;
 export const apps = apps_config;
 export default apps_config;
