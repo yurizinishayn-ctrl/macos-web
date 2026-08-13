@@ -1,5 +1,5 @@
 import { create_app_config } from '🍎/helpers/create-app-config.ts';
-import Safari from '$components/Safari/Safari.svelte';
+import Safari from '$components/apps/Safari/Safari.svelte';
 const wallpapers = create_app_config({
 	title: 'Wallpapers',
 	resizable: true,
@@ -41,9 +41,18 @@ const finder = create_app_config({
 	should_open_window: false,
 });
 
-const safari = create_app_config({
-	title: 'Safari',
-	resizable: true,
+ safari: {
+  id: 'safari',
+  title: 'Safari',
+  icon: 'safari',
+  disabled: false,
+  faded: false,
+  showInDock: true,
+  showInAppStore: true,
+  height: 600,
+  width: 900,
+  component: Safari
+},
 });
 
 const systemPreferences = create_app_config({
