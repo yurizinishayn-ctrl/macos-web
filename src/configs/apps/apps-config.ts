@@ -1,5 +1,5 @@
 import { create_app_config } from '🍎/helpers/create-app-config.ts';
-import Safari from '$components/apps/Safari/Safari.svelte';
+import Safari from '$components/Safari/Safari.svelte';
 const wallpapers = create_app_config({
 	title: 'Wallpapers',
 	resizable: true,
