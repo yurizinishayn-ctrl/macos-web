@@ -47,6 +47,7 @@
 	const openWindow = $derived(apps_config[app_id]?.should_open_window !== false);
 	const externalAction = $derived(apps_config[app_id]?.external_action);
 	const appOpenIconBounceTransform = tweened(0, { duration: 400, easing: sineInOut });
+	const iconSrc = $derived(`${import.meta.env.BASE_URL}app-icons/${app_id}/256.png`);
 
 	async function bounceEffect() {
 		await appOpenIconBounceTransform.set(-40);
@@ -67,9 +68,6 @@
 	onDestroy(() => cancelAnimationFrame(raf));
 	const is_app_store = $derived(app_id === 'appstore');
 	const show_pwa_badge = $derived(is_app_store && needs_update);
-	const iconBase = `${import.meta.env.BASE_URL}app-icons/${app_id}/`;
-	const iconWebpSrc = $derived(`${iconBase}256.webp`);
-	const iconPngSrc = $derived(`${iconBase}256.png`);
 
 	$effect(() => {
 		if (show_pwa_badge) bounceEffect();
@@ -81,10 +79,7 @@
 		{title}
 	</p>
 	<span style:transform="translate(0, {$appOpenIconBounceTransform}px)">
-		<picture>
-			<source srcset={iconWebpSrc} type="image/webp" />
-			<img bind:this={image_el} src={iconPngSrc} alt="{title} app" style:width="{$width_px / 16}rem" draggable="false" />
-		</picture>
+		<img bind:this={image_el} src={iconSrc} alt="{title} app" style:width="{$width_px / 16}rem" draggable="false" />
 	</span>
 	<div class="dot" style:--opacity={+apps.open[app_id]}></div>
 	{#if show_pwa_badge}
@@ -93,11 +88,10 @@
 </button>
 
 <style>
-	img { display: block; will-change: width; }
+	img { display: block; will-change: width; object-fit: contain; }
 	button { display: flex; flex-direction: column; justify-content: flex-end; position: relative; border-radius: 0.5rem; }
 	button:hover .tooltip-enabled, button:focus-visible .tooltip-enabled { display: block; }
 	button > span { display: flex; justify-content: center; align-items: center; }
-	picture { display: block; }
 	.tooltip { white-space: nowrap; position: absolute; background: color-mix(in srgb, var(--system-color-light) 58%, transparent); backdrop-filter: blur(8px); padding: .5rem .75rem; border-radius: .375rem; box-shadow: hsla(0deg,0%,0%,.3) 0 1px 5px 2px; color: var(--system-color-light-contrast); font-family: var(--system-font-family); font-size: .9rem; letter-spacing: .4px; display: none; }
 	.tooltip.dark { color: var(--system-color-dark); }
 	.dot { height: 4px; width: 4px; margin: 0; border-radius: 50%; background: var(--system-color-dark); opacity: var(--opacity); }
