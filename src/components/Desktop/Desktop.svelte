@@ -22,13 +22,14 @@
 </script>
 
 <div bind:this={mainEl} class="container">
+	<Wallpaper />
+
 	<main>
 		<TopBar />
 		<WindowsArea />
 		<Dock />
 	</main>
 
-	<Wallpaper />
 	<BootupScreen />
 	<SystemUpdate />
 
@@ -39,11 +40,17 @@
 	.container {
 		height: 100%;
 		width: 100%;
+		position: relative;
+		isolation: isolate;
+		background: #202124;
+		overflow: hidden;
 	}
 
 	main {
 		height: 100%;
 		width: 100%;
+		position: relative;
+		z-index: 1;
 
 		display: grid;
 		grid-template-rows: auto 1fr auto;
