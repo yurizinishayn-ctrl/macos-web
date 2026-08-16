@@ -5,61 +5,18 @@
 	import { apps_config } from '🍎/configs/apps/apps-config';
 	import { apps } from '🍎/state/apps.svelte';
 	import { system_needs_update } from '🍎/state/system.svelte';
-	import { is_dock_hidden } from '🍎/state/dock.svelte';
 	import DockItem from './DockItem.svelte';
-	import { untrack } from 'svelte';
 
 	let dock_mouse_x = $state<number | null>(null);
-
-	const HIDDEN_DOCK_THRESHOLD = 30;
-	let bodyHeight = $state(0);
-	let mouseY = $state(0);
-
-	let dockContainerEl = $state<HTMLElement>();
-
-	$effect(() => {
-		// Due to how pointer-events: none works, if dock auto opens, you move away, it won't close automatically.
-		// So close it manually if mouse pointer goes out of the dock area.
-		if (Math.abs(mouseY - bodyHeight) > dockContainerEl?.clientHeight) {
-			untrack(() => (dock_mouse_x = null));
-		}
-
-		/**
-		 * if mouseX != null then show the dock. No matter what
-		 * When it becomes null, Then use the mouseY and bodyHeight to determine if the dock should be hidden
-		 */
-		if (dock_mouse_x !== null) {
-			untrack(() => (is_dock_hidden.value = false));
-			return;
-		}
-
-		if (!Object.values(apps.fullscreen).some(Boolean)) {
-			untrack(() => (is_dock_hidden.value = false));
-			return;
-		}
-
-		untrack(() => (is_dock_hidden.value = Math.abs(mouseY - bodyHeight) > HIDDEN_DOCK_THRESHOLD));
-	});
 </script>
 
-<svelte:body onmousemove={({ y }) => (mouseY = y)} />
-
-<svelte:window bind:innerHeight={bodyHeight} />
-
-<section
-	class="dock-container"
-	class:dock-hidden={is_dock_hidden.value}
-	bind:this={dockContainerEl}
-	use:elevation={'dock'}
->
-	<!-- svelte-ignore a11y_no_static_element_interactions -->
+<section class="dock-container" use:elevation={'dock'} aria-label="Dock">
 	<div
 		class="dock-el"
-		class:hidden={is_dock_hidden.value}
-		onmousemove={(event) => (dock_mouse_x = event.x)}
+		onmousemove={(event) => (dock_mouse_x = event.clientX)}
 		onmouseleave={() => (dock_mouse_x = null)}
 	>
-		{#each Object.entries(apps_config) as [appID, config]}
+		{#each Object.entries(apps_config).filter(([, config]) => config.showInDock && !config.disabled) as [appID, config]}
 			{#if config.dock_breaks_before}
 				<div class="divider" aria-hidden="true"></div>
 			{/if}
@@ -71,86 +28,54 @@
 
 <style>
 	.dock-container {
-		padding-bottom: 0.7rem;
+		position: fixed;
+		z-index: 10000;
 		left: 0;
 		bottom: 0;
-
 		width: 100%;
-		height: 5.2rem;
-
-		padding: 0.4rem;
-
+		height: 6rem;
+		padding: 0.5rem 0.75rem 0.75rem;
 		display: flex;
+		align-items: flex-end;
 		justify-content: center;
-
-		&:not(.dock-hidden) {
-			pointer-events: none;
-		}
+		pointer-events: none;
 	}
 
 	.dock-el {
-		background-color: hsla(var(--system-color-light-hsl), 0.4);
-
-		box-shadow:
-			inset 0 0 0 0.2px hsla(var(--system-color-grey-100-hsl), 0.7),
-			0 0 0 0.2px hsla(var(--system-color-grey-900-hsl), 0.7),
-			hsla(0, 0%, 0%, 0.3) 2px 5px 19px 7px;
-
-		position: relative;
-
-		padding: 0.3rem;
-
-		border-radius: 1.2rem;
-
-		height: 100%;
-
+		min-height: 4.75rem;
+		max-width: min(96vw, 860px);
+		padding: 0.45rem 0.55rem;
 		display: flex;
 		align-items: flex-end;
-
-		transition: transform 0.3s ease;
-
-		&:not(.hidden) {
-			pointer-events: auto;
-		}
-
-		&.hidden {
-			transform: translate3d(0, 200%, 0);
-
-			&::before {
-				width: calc(100% - 2px);
-				height: calc(100% - 2px);
-
-				margin-top: 1px;
-				margin-left: 1px;
-			}
-		}
-
-		&::before {
-			content: '';
-
-			border-radius: 20px;
-
-			width: 100%;
-			height: 100%;
-
-			border: inherit;
-
-			backdrop-filter: blur(10px);
-
-			position: absolute;
-			top: 0;
-			left: 0;
-
-			z-index: -1;
-		}
+		justify-content: center;
+		gap: 0.15rem;
+		border: 1px solid rgba(255, 255, 255, 0.18);
+		border-radius: 1.35rem;
+		background: rgba(35, 35, 38, 0.5);
+		box-shadow: 0 14px 40px rgba(0, 0, 0, 0.32), inset 0 1px rgba(255, 255, 255, 0.18);
+		backdrop-filter: blur(24px) saturate(160%);
+		-webkit-backdrop-filter: blur(24px) saturate(160%);
+		pointer-events: auto;
 	}
 
 	.divider {
-		height: 100%;
-		width: 0.2px;
+		width: 1px;
+		align-self: stretch;
+		margin: 0.25rem 0.2rem;
+		background: rgba(255, 255, 255, 0.18);
+	}
 
-		background-color: hsla(var(--system-color-dark-hsl), 0.3);
+	@media (max-width: 600px) {
+		.dock-container {
+			height: 5.2rem;
+			padding-bottom: 0.4rem;
+		}
 
-		margin: 0 4px;
+		.dock-el {
+			max-width: 98vw;
+			overflow-x: auto;
+			justify-content: flex-start;
+			border-radius: 1.1rem;
+		}
 	}
 </style>
