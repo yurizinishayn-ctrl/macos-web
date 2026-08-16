@@ -8,6 +8,34 @@
 	let mouseX = $state<number | null>(null);
 </script>
 
+<svelte:head>
+	<style>
+		/* Use the repository's real app artwork instead of generic hand-drawn placeholders. */
+		.dock-open-app-button .icon-shell {
+			background-size: 100% 100%;
+			background-position: center;
+			background-repeat: no-repeat;
+			box-shadow: none;
+		}
+
+		.dock-open-app-button .icon-shell > svg {
+			opacity: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		.dock-open-app-button.finder .icon-shell { background-image: url('${import.meta.env.BASE_URL}app-icons/finder/256.png'); }
+		.dock-open-app-button.safari .icon-shell { background-image: url('${import.meta.env.BASE_URL}app-icons/safari/256.png'); }
+		.dock-open-app-button.calculator .icon-shell { background-image: url('${import.meta.env.BASE_URL}app-icons/calculator/256.png'); }
+		.dock-open-app-button.calendar .icon-shell { background-image: url('${import.meta.env.BASE_URL}app-icons/calendar/256.png'); }
+		.dock-open-app-button.notes .icon-shell { background-image: url('${import.meta.env.BASE_URL}app-icons/notes/256.png'); }
+		.dock-open-app-button.terminal .icon-shell { background-image: url('${import.meta.env.BASE_URL}app-icons/terminal/256.png'); }
+		.dock-open-app-button.vscode .icon-shell { background-image: url('${import.meta.env.BASE_URL}app-icons/vscode/256.png'); }
+		.dock-open-app-button.system-preferences .icon-shell { background-image: url('${import.meta.env.BASE_URL}app-icons/system-preferences/256.png'); }
+		.dock-open-app-button.appstore .icon-shell { background-image: url('${import.meta.env.BASE_URL}app-icons/appstore/256.png'); }
+	</style>
+</svelte:head>
+
 <section class="dock-container" aria-label="Dock">
 	<div
 		class="dock-el"
