@@ -6,6 +6,7 @@
 	import ContextMenu from './ContextMenu.svelte';
 	import SystemUpdate from './SystemUpdate.svelte';
 	import WindowsArea from './Window/WindowsArea.svelte';
+	import SystemFeatures from '../SystemUI/SystemFeatures.svelte';
 
 	const isMac = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 
@@ -30,6 +31,7 @@
 		<Dock />
 	</main>
 
+	<SystemFeatures />
 	<BootupScreen />
 	<SystemUpdate />
 
