@@ -1,5 +1,6 @@
 import { mount } from 'svelte';
 import './css/global.css';
+import './configs/wallpapers/legacy-macos-wallpapers.ts';
 
 const target = document.getElementById('root');
 
