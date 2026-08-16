@@ -7,15 +7,12 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { prefetch } from './prefetch-plugin';
 
 export default defineConfig({
+	base: process.env.BASE_PATH ?? '/',
 	plugins: [
 		svelte(),
 		prefetch(),
-
 		UnpluginIcons({ autoInstall: true, compiler: 'svelte' }),
 		VitePWA({
-			// Let vite-plugin-pwa handle the web manifest + registration, but write
-			// our own service worker (src/sw.ts) powered by Serwist instead of
-			// workbox's generateSW. The precache list is injected as self.__WB_MANIFEST.
 			strategies: 'injectManifest',
 			srcDir: 'src',
 			filename: 'sw.ts',
@@ -32,32 +29,11 @@ export default defineConfig({
 				theme_color: '#ffffff',
 				description: 'Mac OS Monterey Web written in Svelte',
 				icons: [
-					{
-						src: 'app-icons/finder/128.png',
-						sizes: '128x128',
-						type: 'image/png',
-					},
-					{
-						src: 'app-icons/finder/192.png',
-						sizes: '192x192',
-						type: 'image/png',
-					},
-					{
-						src: 'app-icons/finder/256.png',
-						sizes: '256x256',
-						type: 'image/png',
-					},
-					{
-						src: 'app-icons/finder/512.png',
-						sizes: '512x512',
-						type: 'image/png',
-					},
-					{
-						src: 'app-icons/finder/512.png',
-						sizes: '512x512',
-						type: 'image/png',
-						purpose: 'any maskable',
-					},
+					{ src: 'app-icons/finder/128.png', sizes: '128x128', type: 'image/png' },
+					{ src: 'app-icons/finder/192.png', sizes: '192x192', type: 'image/png' },
+					{ src: 'app-icons/finder/256.png', sizes: '256x256', type: 'image/png' },
+					{ src: 'app-icons/finder/512.png', sizes: '512x512', type: 'image/png' },
+					{ src: 'app-icons/finder/512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' },
 				],
 			},
 		}),
@@ -68,6 +44,4 @@ export default defineConfig({
 			'🍎': new URL('./src/', import.meta.url).pathname,
 		},
 	},
-	// Vite 8 (Rolldown) minifies JS with its built-in minifier and CSS with
-	// lightningcss by default — no explicit build/css config needed.
 });
