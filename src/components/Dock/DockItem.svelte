@@ -16,7 +16,7 @@
 	import { preferences } from '🍎/state/preferences.svelte.ts';
 
 	const { mouse_x, app_id, needs_update = false }: { mouse_x: number | null; app_id: AppID; needs_update?: boolean } = $props();
-	let icon_el = $state<SVGSVGElement>();
+	let icon_el = $state<HTMLElement>();
 	let distance = $state(beyond_the_distance_limit);
 	const width_px = spring(baseWidth, { damping: 0.47, stiffness: 0.12 });
 	const get_width_from_distance = interpolate(distanceInput, widthOutput);
@@ -46,25 +46,25 @@
 
 <button onclick={openApp} aria-label="Launch {title} app" class="dock-open-app-button {app_id}">
 	<p class="tooltip" class:tooltip-enabled={!apps.is_being_dragged} class:dark={preferences.theme.scheme === 'dark'} use:elevation={'dock-tooltip'}>{title}</p>
-	<span class="icon-shell" style:transform="translate(0, {$appOpenIconBounceTransform}px)">
+	<span bind:this={icon_el} class="icon-shell" style:width="{$width_px / 16}rem" style:height="{$width_px / 16}rem" style:transform="translate(0, {$appOpenIconBounceTransform}px)">
 		{#if app_id === 'finder'}
-			<svg bind:this={icon_el} viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="finder" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#62d3ff"/><stop offset="1" stop-color="#1976ff"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="14" fill="url(#finder)"/><path d="M32 4v56" stroke="#fff" stroke-opacity=".45"/><circle cx="22" cy="28" r="3" fill="#13274b"/><circle cx="42" cy="28" r="3" fill="#13274b"/><path d="M20 41c7 5 17 5 24 0" fill="none" stroke="#13274b" stroke-width="3.2" stroke-linecap="round"/></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="finder" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#62d3ff"/><stop offset="1" stop-color="#1976ff"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="14" fill="url(#finder)"/><path d="M32 4v56" stroke="#fff" stroke-opacity=".45"/><circle cx="22" cy="28" r="3" fill="#13274b"/><circle cx="42" cy="28" r="3" fill="#13274b"/><path d="M20 41c7 5 17 5 24 0" fill="none" stroke="#13274b" stroke-width="3.2" stroke-linecap="round"/></svg>
 		{:else if app_id === 'safari'}
-			<svg bind:this={icon_el} viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="safari" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7fe7ff"/><stop offset="1" stop-color="#208cff"/></linearGradient></defs><circle cx="32" cy="32" r="29" fill="url(#safari)" stroke="#fff" stroke-opacity=".55" stroke-width="2"/><circle cx="32" cy="32" r="24" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.4"/><path d="M39 16 35 35 18 43 29 29Z" fill="#fff"/><path d="m39 16-4 19-17 8 11-14Z" fill="#ff5b4d"/></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="safari" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7fe7ff"/><stop offset="1" stop-color="#208cff"/></linearGradient></defs><circle cx="32" cy="32" r="29" fill="url(#safari)" stroke="#fff" stroke-opacity=".55" stroke-width="2"/><circle cx="32" cy="32" r="24" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.4"/><path d="M39 16 35 35 18 43 29 29Z" fill="#fff"/><path d="m39 16-4 19-17 8 11-14Z" fill="#ff5b4d"/></svg>
 		{:else if app_id === 'calculator'}
-			<svg bind:this={icon_el} viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="3" width="54" height="58" rx="12" fill="#26272a"/><rect x="12" y="9" width="40" height="12" rx="4" fill="#6f7277"/><g fill="#f6f7f9"><circle cx="18" cy="31" r="4"/><circle cx="32" cy="31" r="4"/><circle cx="46" cy="31" r="4"/><circle cx="18" cy="44" r="4"/><circle cx="32" cy="44" r="4"/><circle cx="46" cy="44" r="4"/></g><circle cx="18" cy="55" r="4" fill="#ff9f0a"/><circle cx="32" cy="55" r="4" fill="#ff9f0a"/><circle cx="46" cy="55" r="4" fill="#ff9f0a"/></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="3" width="54" height="58" rx="12" fill="#26272a"/><rect x="12" y="9" width="40" height="12" rx="4" fill="#6f7277"/><g fill="#f6f7f9"><circle cx="18" cy="31" r="4"/><circle cx="32" cy="31" r="4"/><circle cx="46" cy="31" r="4"/><circle cx="18" cy="44" r="4"/><circle cx="32" cy="44" r="4"/><circle cx="46" cy="44" r="4"/></g><circle cx="18" cy="55" r="4" fill="#ff9f0a"/><circle cx="32" cy="55" r="4" fill="#ff9f0a"/><circle cx="46" cy="55" r="4" fill="#ff9f0a"/></svg>
 		{:else if app_id === 'calendar'}
-			<svg bind:this={icon_el} viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="4" width="54" height="56" rx="12" fill="#f7f7f7"/><path d="M5 18h54V15c0-6-5-11-11-11H16C10 4 5 9 5 15Z" fill="#ff3b30"/><text x="32" y="46" text-anchor="middle" font-size="29" font-family="Arial, sans-serif" font-weight="700" fill="#222">16</text></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="4" width="54" height="56" rx="12" fill="#f7f7f7"/><path d="M5 18h54V15c0-6-5-11-11-11H16C10 4 5 9 5 15Z" fill="#ff3b30"/><text x="32" y="46" text-anchor="middle" font-size="29" font-family="Arial, sans-serif" font-weight="700" fill="#222">16</text></svg>
 		{:else if app_id === 'notes'}
 			<div class="css-icon notes-icon" aria-hidden="true"><span class="notes-lines"></span></div>
 		{:else if app_id === 'terminal'}
 			<div class="css-icon terminal-icon" aria-hidden="true"><span class="terminal-prompt">&gt;_</span></div>
 		{:else if app_id === 'vscode'}
-			<svg bind:this={icon_el} viewBox="0 0 64 64" aria-hidden="true"><path d="M11 18 31 32 11 46 5 40V24Z" fill="#22a7ff"/><path d="m31 11 20 10v22L31 53 18 44l25-19-25-17Z" fill="#1677d2"/><path d="m18 27 13 10 20-16v22L31 54 18 44l25-19Z" fill="#0c5ca8"/></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M11 18 31 32 11 46 5 40V24Z" fill="#22a7ff"/><path d="m31 11 20 10v22L31 53 18 44l25-19-25-17Z" fill="#1677d2"/><path d="m18 27 13 10 20-16v22L31 54 18 44l25-19Z" fill="#0c5ca8"/></svg>
 		{:else if app_id === 'system-preferences'}
-			<svg bind:this={icon_el} viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="5" width="54" height="54" rx="14" fill="#d7dce2"/><circle cx="32" cy="32" r="12" fill="#fff" stroke="#7b8086" stroke-width="4"/><path d="M32 14v8M32 42v8M14 32h8M42 32h8" stroke="#7b8086" stroke-width="4" stroke-linecap="round"/></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="5" width="54" height="54" rx="14" fill="#d7dce2"/><circle cx="32" cy="32" r="12" fill="#fff" stroke="#7b8086" stroke-width="4"/><path d="M32 14v8M32 42v8M14 32h8M42 32h8" stroke="#7b8086" stroke-width="4" stroke-linecap="round"/></svg>
 		{:else}
-			<svg bind:this={icon_el} viewBox="0 0 64 64" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="15" fill="#0a8cff"/><path d="M32 12 22 32h8l-4 20 16-26h-8Z" fill="#fff" opacity=".92"/></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="15" fill="#0a8cff"/><path d="M32 12 22 32h8l-4 20 16-26h-8Z" fill="#fff" opacity=".92"/></svg>
 		{/if}
 	</span>
 	<div class="dot" style:--opacity={+apps.open[app_id]}></div>
@@ -73,7 +73,7 @@
 
 <style>
 	button { display:flex; flex-direction:column; justify-content:flex-end; position:relative; border-radius:.65rem; padding:0; background:transparent; border:0; box-shadow:none; }
-	.icon-shell { display:flex; align-items:center; justify-content:center; width:{$width_px / 16}rem; height:{$width_px / 16}rem; background:transparent; box-shadow:none; filter:none; }
+	.icon-shell { display:flex; align-items:center; justify-content:center; background:transparent; box-shadow:none; filter:none; flex:none; }
 	svg, .css-icon { display:block; width:100%; height:100%; flex:none; }
 	.css-icon { position:relative; overflow:hidden; border-radius:14px; }
 	.notes-icon { background:linear-gradient(#ffd75a 0 27%, #f8f8f8 27% 100%); box-shadow:inset 0 0 0 1px rgba(0,0,0,.08); }
