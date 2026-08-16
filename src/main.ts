@@ -3,14 +3,14 @@ import Desktop from './components/Desktop/Desktop.svelte';
 import './css/global.css';
 
 const target = document.getElementById('root');
+let desktop: ReturnType<typeof mount> | undefined;
 
 if (!target) {
 	throw new Error('macOS Web: #root element was not found.');
 }
 
 try {
-	const desktop = mount(Desktop, { target });
-	export default desktop;
+	desktop = mount(Desktop, { target });
 } catch (error) {
 	console.error('macOS Web failed to mount:', error);
 	target.innerHTML = `
@@ -31,3 +31,5 @@ try {
 		location.reload();
 	});
 }
+
+export default desktop;
