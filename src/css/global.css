@@ -2,7 +2,8 @@
 @import './theme.css';
 
 :root {
-	background: #202124;
+	background: #0f1115;
+	color-scheme: light;
 }
 
 html,
@@ -10,7 +11,7 @@ body {
 	height: 100%;
 	width: 100%;
 	margin: 0;
-	background: #202124;
+	background: #0f1115;
 }
 
 body {
@@ -20,6 +21,7 @@ body {
 	overflow: hidden;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
 }
 
 *,
@@ -39,13 +41,19 @@ a,
 	cursor: var(--system-cursor-pointer), pointer;
 }
 
+button {
+	font: inherit;
+	-webkit-tap-highlight-color: transparent;
+}
+
 *:focus {
 	outline: none;
 }
 
 *:focus-visible {
-	outline: none;
-	box-shadow: var(--system-focus-outline);
+	outline: 2px solid color-mix(in srgb, var(--system-color-primary) 78%, white 22%);
+	outline-offset: 2px;
+	box-shadow: 0 0 0 4px color-mix(in srgb, var(--system-color-primary) 18%, transparent);
 }
 
 #root {
@@ -53,16 +61,16 @@ a,
 	height: 100%;
 	min-height: 100vh;
 	isolation: isolate;
-	background: #202124;
+	background: #0f1115;
 }
 
 ::selection {
-	background: hsla(var(--system-color-primary-hsl), 0.28);
+	background: color-mix(in srgb, var(--system-color-primary) 32%, transparent);
 }
 
 ::-webkit-scrollbar {
-	width: 7px;
-	height: 7px;
+	width: 8px;
+	height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -70,14 +78,14 @@ a,
 }
 
 ::-webkit-scrollbar-thumb {
-	background: rgba(128, 128, 128, 0.45);
+	background: rgba(128, 128, 128, 0.42);
 	border-radius: 999px;
 	border: 2px solid transparent;
 	background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: rgba(128, 128, 128, 0.65);
+	background: rgba(128, 128, 128, 0.6);
 	background-clip: padding-box;
 }
 
