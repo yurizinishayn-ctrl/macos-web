@@ -2,7 +2,6 @@
 
 <script lang="ts">
 	import { apps_config } from '🍎/configs/apps/apps-config';
-	import { apps } from '🍎/state/apps.svelte';
 	import { system_needs_update } from '🍎/state/system.svelte';
 	import DockItem from './DockItem.svelte';
 
@@ -15,7 +14,7 @@
 		onmousemove={(event) => (mouseX = event.clientX)}
 		onmouseleave={() => (mouseX = null)}
 	>
-		{#each Object.entries(apps_config).filter(([, config]) => config.showInDock && !config.disabled) as [appID, config]}
+		{#each Object.entries(apps_config).filter(([, config]) => config.showInDock && !config.disabled) as [appID]}
 			<DockItem mouse_x={mouseX} app_id={appID} needs_update={system_needs_update.value} />
 		{/each}
 	</div>
@@ -26,33 +25,40 @@
 		position: fixed;
 		z-index: 10000;
 		left: 0;
-		bottom: .35rem;
+		bottom: .7rem;
 		width: 100%;
-		min-height: 4.7rem;
+		min-height: 5.25rem;
 		display: flex;
 		justify-content: center;
 		pointer-events: none;
-		padding: 0 .5rem;
+		padding: 0 .65rem;
 	}
 
 	.dock-el {
-		min-height: 4.15rem;
-		max-width: min(96vw, 820px);
-		padding: .32rem .4rem .35rem;
+		min-height: 4.45rem;
+		max-width: min(94vw, 860px);
+		padding: .36rem .5rem .42rem;
 		display: flex;
 		align-items: flex-end;
-		gap: .05rem;
+		gap: .16rem;
 		pointer-events: auto;
-		border: 1px solid color-mix(in srgb, var(--system-color-light) 34%, transparent);
-		border-radius: 1.2rem;
-		background: color-mix(in srgb, var(--system-color-light) 22%, transparent);
-		box-shadow: 0 10px 28px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.14);
-		backdrop-filter: blur(18px) saturate(125%);
-		-webkit-backdrop-filter: blur(18px) saturate(125%);
+		border: 1px solid color-mix(in srgb, white 28%, transparent);
+		border-radius: 1.45rem;
+		background:
+			linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.07) 48%, rgba(255,255,255,.03)),
+			color-mix(in srgb, var(--system-color-light) 18%, transparent);
+		box-shadow:
+			0 18px 42px rgba(0,0,0,.28),
+			0 4px 12px rgba(0,0,0,.14),
+			inset 0 1px 0 rgba(255,255,255,.35),
+			inset 0 -1px 0 rgba(0,0,0,.12);
+		backdrop-filter: blur(22px) saturate(145%);
+		-webkit-backdrop-filter: blur(22px) saturate(145%);
+		isolation: isolate;
 	}
 
 	@media (max-width: 640px) {
-		.dock-container { bottom: .2rem; }
-		.dock-el { max-width: 99vw; overflow-x: auto; border-radius: 1rem; }
+		.dock-container { bottom: .35rem; min-height: 4.6rem; }
+		.dock-el { max-width: 99vw; overflow-x: auto; border-radius: 1.15rem; }
 	}
 </style>
