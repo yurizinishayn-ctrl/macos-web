@@ -59,44 +59,88 @@
 		{#if app_id === 'finder'}
 			<svg viewBox="0 0 64 64" aria-hidden="true">
 				<defs>
-					<linearGradient id="finder-face" x1="0" y1="0" x2="1" y2="1">
-						<stop stop-color="#8fe8ff"/>
-						<stop offset=".48" stop-color="#4fb9ff"/>
-						<stop offset="1" stop-color="#2871e8"/>
-					</linearGradient>
-					<linearGradient id="finder-shine" x1="0" y1="0" x2="0" y2="1">
-						<stop stop-color="#fff" stop-opacity=".55"/>
-						<stop offset="1" stop-color="#fff" stop-opacity="0"/>
-					</linearGradient>
+					<linearGradient id="finder-blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7ee8ff"/><stop offset=".48" stop-color="#52b5ff"/><stop offset="1" stop-color="#2a65da"/></linearGradient>
 				</defs>
-				<rect x="3" y="3" width="58" height="58" rx="17" fill="url(#finder-face)"/>
-				<path d="M32 3v58" stroke="#fff" stroke-opacity=".32" stroke-width="1.2"/>
-				<path d="M12 30c2.4-7.4 7.5-11.5 14.2-12.6 1.8-.3 3.6-.4 5.8-.4 2.2 0 4 .1 5.8.4C44.5 18.5 49.6 22.6 52 30c-2.2 11.3-9.2 20-20 21-10.8-1-17.8-9.7-20-21Z" fill="url(#finder-shine)" opacity=".34"/>
-				<path d="M20 29c2.9-2.8 6.2-2.8 9.1-.1M34.9 28.9c2.9-2.7 6.2-2.7 9.1.1" fill="none" stroke="#12345f" stroke-width="2.8" stroke-linecap="round"/>
-				<ellipse cx="24.7" cy="30" rx="2.1" ry="2.5" fill="#12345f"/>
-				<ellipse cx="39.3" cy="30" rx="2.1" ry="2.5" fill="#12345f"/>
-				<path d="M32 31.5c-1 3.1-1.3 6.8-.6 9.3" fill="none" stroke="#12345f" stroke-width="2.4" stroke-linecap="round"/>
-				<path d="M18.8 42.1c3.8 3.8 9 5.4 13.2 5.4 4.2 0 9.4-1.6 13.2-5.4" fill="none" stroke="#12345f" stroke-width="2.8" stroke-linecap="round"/>
-				<path d="M8 16c7-7 14-10 24-10s17 3 24 10" fill="none" stroke="#fff" stroke-opacity=".15" stroke-width="2"/>
+				<rect x="2" y="2" width="60" height="60" rx="18" fill="url(#finder-blue)"/>
+				<path d="M32 2v60" stroke="#fff" stroke-opacity=".32"/>
+				<path d="M14 32c1.5-9.4 7-16.2 18-17 11 .8 16.5 7.6 18 17-1.8 10.9-8.2 17.8-18 18.7C22.2 49.8 15.8 42.9 14 32Z" fill="#fff" fill-opacity=".08"/>
+				<circle cx="24.2" cy="29.2" r="2.4" fill="#0b376b"/><circle cx="39.8" cy="29.2" r="2.4" fill="#0b376b"/>
+				<path d="M18.7 27.8c3.2-2.9 6.6-2.9 9.8-.1M35.5 27.7c3.2-2.8 6.6-2.8 9.8.1" fill="none" stroke="#0b376b" stroke-width="2.6" stroke-linecap="round"/>
+				<path d="M32 31.2c-1.1 3.4-1.4 6.8-.7 9.2" fill="none" stroke="#0b376b" stroke-width="2.3" stroke-linecap="round"/>
+				<path d="M19.5 42c3.6 3.7 8.1 5.3 12.5 5.3 4.4 0 8.9-1.6 12.5-5.3" fill="none" stroke="#0b376b" stroke-width="2.7" stroke-linecap="round"/>
+				<path d="M8 15c6.8-5.9 14.7-8.8 24-8.8S49.2 9.1 56 15" fill="none" stroke="#fff" stroke-opacity=".18" stroke-width="1.8"/>
 			</svg>
 		{:else if app_id === 'safari'}
-			<svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="safari-icon" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a3ecff"/><stop offset="1" stop-color="#4a91ff"/></linearGradient></defs><circle cx="32" cy="32" r="30" fill="url(#safari-icon)" stroke="#fff" stroke-opacity=".7" stroke-width="2"/><circle cx="32" cy="32" r="23.5" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1.5"/><path d="M36.8 13.8 33.8 33.8 14.7 45.4l12.4-18.8Z" fill="#fff" opacity=".94"/><path d="m36.8 13.8-3 20-19.1 11.6 13.2-18.8Z" fill="#ff5b4d"/></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true">
+				<defs><radialGradient id="safari-bg"><stop stop-color="#eaf8ff"/><stop offset=".62" stop-color="#72cfff"/><stop offset="1" stop-color="#3485ef"/></radialGradient></defs>
+				<circle cx="32" cy="32" r="30" fill="url(#safari-bg)" stroke="#fff" stroke-opacity=".7" stroke-width="1.5"/>
+				<circle cx="32" cy="32" r="22.8" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.2"/>
+				<path d="M36.6 13.5 33.6 33.3 13.8 48.3 29.2 28.7Z" fill="#fff"/>
+				<path d="m36.6 13.5-3 19.8-19.8 15 22.8-14.7Z" fill="#ff3b30"/>
+				<path d="M32 8v4M56 32h-4M32 56v-4M8 32h4" stroke="#fff" stroke-opacity=".5" stroke-width="1.4" stroke-linecap="round"/>
+			</svg>
 		{:else if app_id === 'calculator'}
-			<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="3" width="54" height="58" rx="14" fill="#25272b"/><rect x="11" y="10" width="42" height="13" rx="4" fill="#777b81"/><text x="49" y="20" text-anchor="end" font-size="8" font-family="Arial" fill="#fff">0</text><g fill="#f4f4f5"><circle cx="18" cy="32" r="4"/><circle cx="31" cy="32" r="4"/><circle cx="44" cy="32" r="4"/><circle cx="18" cy="45" r="4"/><circle cx="31" cy="45" r="4"/><circle cx="44" cy="45" r="4"/></g><g fill="#ff9f0a"><circle cx="18" cy="55" r="4"/><circle cx="31" cy="55" r="4"/><circle cx="44" cy="55" r="4"/></g></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true">
+				<rect x="5" y="3" width="54" height="58" rx="14" fill="#2c2d31"/>
+				<rect x="11" y="9" width="42" height="14" rx="4.5" fill="#81858b"/>
+				<text x="48" y="19.2" text-anchor="end" font-size="7.8" font-family="-apple-system,Arial" fill="#fff">0</text>
+				{#each [[18,32,'#777a80'],[31,32,'#777a80'],[44,32,'#777a80'],[18,44,'#777a80'],[31,44,'#777a80'],[44,44,'#777a80'],[18,55,'#777a80'],[31,55,'#777a80'],[44,55,'#ff9f0a']] as item}
+					<circle cx={item[0]} cy={item[1]} r="4.15" fill={item[2]}/>
+				{/each}
+			</svg>
 		{:else if app_id === 'calendar'}
-			<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="4" width="56" height="56" rx="14" fill="#fff"/><path d="M4 18h56V15c0-6.1-4.9-11-11-11H15C8.9 4 4 8.9 4 15Z" fill="#ff3b30"/><text x="32" y="42" text-anchor="middle" font-size="12" font-family="Arial" font-weight="600" fill="#ff3b30">AUGUST</text><text x="32" y="56" text-anchor="middle" font-size="24" font-family="Arial" font-weight="700" fill="#1c1c1e">16</text></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true">
+				<rect x="4" y="4" width="56" height="56" rx="13" fill="#fff"/>
+				<path d="M4 17.5h56V15c0-6.1-4.9-11-11-11H15C8.9 4 4 8.9 4 15Z" fill="#ff3b30"/>
+				<text x="32" y="43" text-anchor="middle" font-size="10" font-weight="650" font-family="-apple-system,Arial" fill="#ff3b30">AUG</text>
+				<text x="32" y="56" text-anchor="middle" font-size="24" font-weight="700" font-family="-apple-system,Arial" fill="#1c1c1e">16</text>
+			</svg>
 		{:else if app_id === 'notes'}
-			<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="3" width="52" height="58" rx="10" fill="#ffd94f"/><rect x="12" y="12" width="40" height="6" rx="3" fill="#fff" opacity=".98"/><rect x="12" y="23" width="31" height="3.5" rx="1.75" fill="#7d6b2c" opacity=".62"/><rect x="12" y="32" width="36" height="3.5" rx="1.75" fill="#7d6b2c" opacity=".62"/><rect x="12" y="41" width="28" height="3.5" rx="1.75" fill="#7d6b2c" opacity=".62"/><path d="M6 17h52" stroke="#d6aa19" stroke-opacity=".4"/></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true">
+				<defs><linearGradient id="note-yellow" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffe769"/><stop offset="1" stop-color="#f6c936"/></linearGradient></defs>
+				<rect x="7" y="4" width="50" height="56" rx="11" fill="url(#note-yellow)"/>
+				<path d="M7 17h50" stroke="#d5ab1d" stroke-opacity=".45"/>
+				<rect x="13" y="11" width="38" height="5" rx="2.5" fill="#fff"/>
+				<rect x="13" y="24" width="31" height="2.7" rx="1.35" fill="#735f25" fill-opacity=".62"/>
+				<rect x="13" y="32" width="35" height="2.7" rx="1.35" fill="#735f25" fill-opacity=".62"/>
+				<rect x="13" y="40" width="27" height="2.7" rx="1.35" fill="#735f25" fill-opacity=".62"/>
+			</svg>
 		{:else if app_id === 'terminal'}
-			<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="3" y="5" width="58" height="54" rx="13" fill="#131518"/><path d="M12 21 24 32 12 43" fill="none" stroke="#7cff9c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M30 44h21" stroke="#f2f2f3" stroke-width="4" stroke-linecap="round"/></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true">
+				<rect x="4" y="5" width="56" height="54" rx="13" fill="#151618"/>
+				<path d="M12 21 23 32 12 43" fill="none" stroke="#f3f3f4" stroke-width="3.7" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M29 44h22" stroke="#f3f3f4" stroke-width="3.7" stroke-linecap="round"/>
+				<path d="M8 13h48" stroke="#fff" stroke-opacity=".12"/>
+			</svg>
 		{:else if app_id === 'vscode'}
-			<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M10 16 31 32 10 48 5 43V21Z" fill="#2aa9ff"/><path d="m31 10 21 11v22L31 54 18 44l25-19-25-17Z" fill="#1685da"/><path d="m18 27 13 10 21-16v22L31 54 18 44l25-19Z" fill="#0d5ca7"/></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true">
+				<path d="M11 17 30 32 11 47 6 42V22Z" fill="#2aa8ff"/>
+				<path d="m30 10 22 11v22L30 54 18 45l24-19-24-16Z" fill="#1686dd"/>
+				<path d="m18 27 12 10 22-17v22L30 54 18 45l24-19Z" fill="#0d5ca8"/>
+			</svg>
 		{:else if app_id === 'system-preferences'}
-			<svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="settings-icon" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#eef2f6"/><stop offset="1" stop-color="#c8cfd8"/></linearGradient></defs><rect x="4" y="4" width="56" height="56" rx="15" fill="url(#settings-icon)"/><circle cx="32" cy="32" r="12" fill="#f7f8fa" stroke="#858c95" stroke-width="4"/><path d="M32 12v8M32 44v8M12 32h8M44 32h8M18 18l6 6M40 40l6 6M46 18l-6 6M24 40l-6 6" stroke="#858c95" stroke-width="4" stroke-linecap="round"/></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true">
+				<defs><linearGradient id="settings-body" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f4f6f8"/><stop offset="1" stop-color="#c4cbd3"/></linearGradient></defs>
+				<circle cx="32" cy="32" r="29" fill="url(#settings-body)" stroke="#fff" stroke-opacity=".55" stroke-width="1.5"/>
+				{#each [0,45,90,135] as a}
+					<rect x="29.6" y="8" width="4.8" height="48" rx="2.4" fill="#7b858f" transform={`rotate(${a} 32 32)`}/>
+				{/each}
+				<circle cx="32" cy="32" r="10.5" fill="#f3f5f7" stroke="#78838e" stroke-width="3.5"/>
+				<circle cx="32" cy="32" r="4.4" fill="#78838e"/>
+			</svg>
 		{:else if app_id === 'appstore'}
-			<svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="store-icon" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#4fd7ff"/><stop offset="1" stop-color="#0b80ff"/></linearGradient></defs><rect x="3" y="3" width="58" height="58" rx="16" fill="url(#store-icon)"/><path d="M22 42h21M24 22c4 0 7 3 8 7 1-4 4-7 8-7M28 39l8-14M38 39l-3-5M21 39l7-12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true">
+				<defs><linearGradient id="store-blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#65ddff"/><stop offset="1" stop-color="#0a77f7"/></linearGradient></defs>
+				<rect x="3" y="3" width="58" height="58" rx="16" fill="url(#store-blue)"/>
+				<path d="M22 43h20M24.8 22.2c3.5-.2 6 2 7.2 6.3 1.2-4.3 3.7-6.5 7.2-6.3M28 40l8.2-15.4M38.2 40l-3-5.1M21 40l7.6-13.4" fill="none" stroke="#fff" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+			</svg>
 		{:else}
-			<svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="generic-icon" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#57c8ff"/><stop offset="1" stop-color="#1264ff"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="16" fill="url(#generic-icon)"/><path d="M32 11 22 33h9l-4 20 15-25h-9Z" fill="#fff" opacity=".95"/></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true">
+				<defs><linearGradient id="generic-system" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e8eef6"/><stop offset="1" stop-color="#9aa7b6"/></linearGradient></defs>
+				<rect x="3" y="3" width="58" height="58" rx="16" fill="url(#generic-system)"/>
+				<circle cx="32" cy="32" r="17" fill="none" stroke="#fff" stroke-opacity=".88" stroke-width="4"/>
+				<path d="M32 20v24M20 32h24" stroke="#6b7784" stroke-width="3" stroke-linecap="round"/>
+			</svg>
 		{/if}
 	</span>
 	<div class="dot" style:--opacity={+apps.open[app_id]}></div>
@@ -105,7 +149,7 @@
 
 <style>
 	button { display:flex; flex-direction:column; justify-content:flex-end; position:relative; border-radius:.7rem; padding:0; background:transparent; border:0; box-shadow:none; }
-	.icon-shell { display:flex; align-items:center; justify-content:center; background:transparent; box-shadow:0 1px 1px rgba(0,0,0,.12),0 5px 12px rgba(0,0,0,.14); filter:none; flex:none; border-radius:16px; overflow:hidden; }
+	.icon-shell { display:flex; align-items:center; justify-content:center; background:transparent; box-shadow:none; filter:none; flex:none; border-radius:18px; overflow:hidden; }
 	svg { display:block; width:100%; height:100%; flex:none; }
 	button:hover .tooltip-enabled, button:focus-visible .tooltip-enabled { display:block; }
 	.tooltip { white-space:nowrap; position:absolute; bottom:3.65rem; left:50%; transform:translateX(-50%); background:color-mix(in srgb, var(--system-color-light) 58%, transparent); backdrop-filter:blur(8px); padding:.5rem .75rem; border-radius:.375rem; box-shadow:0 1px 5px 2px rgba(0,0,0,.3); color:var(--system-color-light-contrast); font-family:var(--system-font-family); font-size:.85rem; letter-spacing:.2px; display:none; }
