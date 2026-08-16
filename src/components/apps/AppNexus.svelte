@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Safari from './Safari/Safari.svelte';
 	import type { AppID } from '🍎/state/apps.svelte';
 
 	const { app_id, is_being_dragged }: { app_id: AppID; is_being_dragged: boolean } = $props();
@@ -7,7 +8,7 @@
 {#if app_id === 'finder'}
 	{#await import('./Finder/Finder.svelte') then { default: Finder }}<Finder />{/await}
 {:else if app_id === 'safari'}
-	{#await import('./Safari/Safari.svelte') then { default: Safari }}<Safari />{/await}
+	<Safari />
 {:else if app_id === 'calendar'}
 	{#await import('./Calendar/Calendar.svelte') then { default: Calendar }}<Calendar />{/await}
 {:else if app_id === 'notes'}
