@@ -1,38 +1,38 @@
 import Safari from '🍎/components/apps/Safari/Safari.svelte';
 
 export const apps_config = {
-  finder: {
-    id: 'finder', title: 'Finder', icon: 'finder', disabled: false, faded: false,
-    showInDock: true, showInAppStore: false, height: 520, width: 760,
-  },
-  safari: {
-    id: 'safari', title: 'Safari', icon: 'safari', disabled: false, faded: false,
-    showInDock: true, showInAppStore: true, height: 620, width: 980, component: Safari,
-  },
-  calculator: {
-    id: 'calculator', title: 'Calculator', icon: 'calculator', disabled: false, faded: false,
-    showInDock: true, showInAppStore: true, height: 430, width: 330,
-  },
-  calendar: {
-    id: 'calendar', title: 'Calendar', icon: 'calendar', disabled: false, faded: false,
-    showInDock: true, showInAppStore: true, height: 620, width: 860,
-  },
-  notes: {
-    id: 'notes', title: 'Notes', icon: 'appstore', disabled: false, faded: false,
-    showInDock: true, showInAppStore: true, height: 620, width: 760,
-  },
-  terminal: {
-    id: 'terminal', title: 'Terminal', icon: 'vscode', disabled: false, faded: false,
-    showInDock: true, showInAppStore: true, height: 520, width: 780,
-  },
-  vscode: {
-    id: 'vscode', title: 'VS Code', icon: 'vscode', disabled: false, faded: false,
-    showInDock: true, showInAppStore: true, height: 650, width: 1000,
-  },
-  appstore: {
-    id: 'appstore', title: 'App Store', icon: 'appstore', disabled: false, faded: false,
-    showInDock: true, showInAppStore: false, height: 600, width: 820,
-  },
+	finder: {
+		id: 'finder', title: 'Finder', icon: 'finder', disabled: false, faded: false,
+		showInDock: true, showInAppStore: false, should_open_window: true, height: 520, width: 760,
+	},
+	safari: {
+		id: 'safari', title: 'Safari', icon: 'safari', disabled: false, faded: false,
+		showInDock: true, showInAppStore: true, should_open_window: true, height: 620, width: 980, component: Safari,
+	},
+	calculator: {
+		id: 'calculator', title: 'Calculator', icon: 'calculator', disabled: false, faded: false,
+		showInDock: true, showInAppStore: true, should_open_window: true, height: 430, width: 330,
+	},
+	calendar: {
+		id: 'calendar', title: 'Calendar', icon: 'calendar', disabled: false, faded: false,
+		showInDock: true, showInAppStore: true, should_open_window: true, height: 620, width: 860,
+	},
+	notes: {
+		id: 'notes', title: 'Notes', icon: 'notes', disabled: false, faded: false,
+		showInDock: true, showInAppStore: true, should_open_window: true, height: 620, width: 760,
+	},
+	terminal: {
+		id: 'terminal', title: 'Terminal', icon: 'terminal', disabled: false, faded: false,
+		showInDock: true, showInAppStore: true, should_open_window: true, height: 520, width: 780,
+	},
+	vscode: {
+		id: 'vscode', title: 'VS Code', icon: 'vscode', disabled: false, faded: false,
+		showInDock: true, showInAppStore: true, should_open_window: true, height: 650, width: 1000,
+	},
+	appstore: {
+		id: 'appstore', title: 'App Store', icon: 'appstore', disabled: false, faded: false,
+		showInDock: true, showInAppStore: false, should_open_window: true, height: 600, width: 820,
+	},
 };
 
 export const appsConfig = apps_config;
