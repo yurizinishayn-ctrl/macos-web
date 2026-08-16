@@ -45,10 +45,10 @@
 </script>
 
 <button onclick={openApp} aria-label="Launch {title} app" class="dock-open-app-button {app_id}">
-	<p class="tooltip" class:tooltip-enabled={!apps.is_being_dragged} class:dark={preferences.theme.scheme === 'dark'} style:top={preferences.reduced_motion ? '-50px' : '-35%'} style:transform="translate(0, {$appOpenIconBounceTransform}px)" use:elevation={'dock-tooltip'}>{title}</p>
+	<p class="tooltip" class:tooltip-enabled={!apps.is_being_dragged} class:dark={preferences.theme.scheme === 'dark'} use:elevation={'dock-tooltip'}>{title}</p>
 	<span class="icon-shell" style:transform="translate(0, {$appOpenIconBounceTransform}px)">
 		{#if app_id === 'finder'}
-			<svg bind:this={icon_el} viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="finder" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#62d3ff"/><stop offset="1" stop-color="#1976ff"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="14" fill="url(#finder)"/><path d="M32 4v56" stroke="#fff" stroke-opacity=".45"/><path d="M17 25c4-4 8-4 12 0M35 25c4-4 8-4 12 0M21 42c7 5 15 5 22 0" fill="none" stroke="#13274b" stroke-width="3.2" stroke-linecap="round"/></svg>
+			<svg bind:this={icon_el} viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="finder" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#62d3ff"/><stop offset="1" stop-color="#1976ff"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="14" fill="url(#finder)"/><path d="M32 4v56" stroke="#fff" stroke-opacity=".45"/><circle cx="22" cy="28" r="3" fill="#13274b"/><circle cx="42" cy="28" r="3" fill="#13274b"/><path d="M20 41c7 5 17 5 24 0" fill="none" stroke="#13274b" stroke-width="3.2" stroke-linecap="round"/></svg>
 		{:else if app_id === 'safari'}
 			<svg bind:this={icon_el} viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="safari" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7fe7ff"/><stop offset="1" stop-color="#208cff"/></linearGradient></defs><circle cx="32" cy="32" r="29" fill="url(#safari)" stroke="#fff" stroke-opacity=".55" stroke-width="2"/><circle cx="32" cy="32" r="24" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.4"/><path d="M39 16 35 35 18 43 29 29Z" fill="#fff"/><path d="m39 16-4 19-17 8 11-14Z" fill="#ff5b4d"/></svg>
 		{:else if app_id === 'calculator'}
@@ -56,26 +56,33 @@
 		{:else if app_id === 'calendar'}
 			<svg bind:this={icon_el} viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="4" width="54" height="56" rx="12" fill="#f7f7f7"/><path d="M5 18h54V15c0-6-5-11-11-11H16C10 4 5 9 5 15Z" fill="#ff3b30"/><text x="32" y="46" text-anchor="middle" font-size="29" font-family="Arial, sans-serif" font-weight="700" fill="#222">16</text></svg>
 		{:else if app_id === 'notes'}
-			<svg bind:this={icon_el} viewBox="0 0 64 64" aria-hidden="true"><rect x="7" y="3" width="50" height="58" rx="9" fill="#ffd75a"/><rect x="14" y="12" width="36" height="5" rx="2.5" fill="#fff" fill-opacity=".9"/><rect x="14" y="23" width="30" height="4" rx="2" fill="#8b6d14" fill-opacity=".45"/><rect x="14" y="33" width="30" height="4" rx="2" fill="#8b6d14" fill-opacity=".45"/><rect x="14" y="43" width="24" height="4" rx="2" fill="#8b6d14" fill-opacity=".45"/></svg>
+			<div class="css-icon notes-icon" aria-hidden="true"><span class="notes-lines"></span></div>
 		{:else if app_id === 'terminal'}
-			<svg bind:this={icon_el} viewBox="0 0 64 64" aria-hidden="true"><rect x="3" y="5" width="58" height="54" rx="12" fill="#15161a"/><path d="m13 20 11 10-11 10" fill="none" stroke="#66ff8a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M29 43h18" stroke="#e7e7ea" stroke-width="4" stroke-linecap="round"/></svg>
+			<div class="css-icon terminal-icon" aria-hidden="true"><span class="terminal-prompt">&gt;_</span></div>
 		{:else if app_id === 'vscode'}
 			<svg bind:this={icon_el} viewBox="0 0 64 64" aria-hidden="true"><path d="M11 18 31 32 11 46 5 40V24Z" fill="#22a7ff"/><path d="m31 11 20 10v22L31 53 18 44l25-19-25-17Z" fill="#1677d2"/><path d="m18 27 13 10 20-16v22L31 54 18 44l25-19Z" fill="#0c5ca8"/></svg>
+		{:else if app_id === 'system-preferences'}
+			<svg bind:this={icon_el} viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="5" width="54" height="54" rx="14" fill="#d7dce2"/><circle cx="32" cy="32" r="12" fill="#fff" stroke="#7b8086" stroke-width="4"/><path d="M32 14v8M32 42v8M14 32h8M42 32h8" stroke="#7b8086" stroke-width="4" stroke-linecap="round"/></svg>
 		{:else}
 			<svg bind:this={icon_el} viewBox="0 0 64 64" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="15" fill="#0a8cff"/><path d="M32 12 22 32h8l-4 20 16-26h-8Z" fill="#fff" opacity=".92"/></svg>
 		{/if}
 	</span>
 	<div class="dot" style:--opacity={+apps.open[app_id]}></div>
-	{#if show_pwa_badge}<div class="pwa-badge" style:transform="scale({$width_px / baseWidth})">1</div>{/if}
+	{#if show_pwa_badge}<div class="pwa-badge">1</div>{/if}
 </button>
 
 <style>
 	button { display:flex; flex-direction:column; justify-content:flex-end; position:relative; border-radius:.65rem; padding:0; background:transparent; border:0; box-shadow:none; }
-	.icon-shell { display:flex; align-items:center; justify-content:center; background:transparent; box-shadow:none; filter:none; }
-	svg { display:block; width:{$width_px / 16}rem; height:{$width_px / 16}rem; flex:none; }
+	.icon-shell { display:flex; align-items:center; justify-content:center; width:{$width_px / 16}rem; height:{$width_px / 16}rem; background:transparent; box-shadow:none; filter:none; }
+	svg, .css-icon { display:block; width:100%; height:100%; flex:none; }
+	.css-icon { position:relative; overflow:hidden; border-radius:14px; }
+	.notes-icon { background:linear-gradient(#ffd75a 0 27%, #f8f8f8 27% 100%); box-shadow:inset 0 0 0 1px rgba(0,0,0,.08); }
+	.notes-lines { position:absolute; left:22%; right:16%; top:40%; height:42%; background:repeating-linear-gradient(to bottom, #8b8b8b 0 3px, transparent 3px 9px); opacity:.65; }
+	.terminal-icon { background:#16171a; box-shadow:inset 0 0 0 1px rgba(255,255,255,.12); }
+	.terminal-prompt { position:absolute; inset:0; display:grid; place-items:center; color:#65ff82; font:700 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing:-1px; }
 	button:hover .tooltip-enabled, button:focus-visible .tooltip-enabled { display:block; }
-	.tooltip { white-space:nowrap; position:absolute; background:color-mix(in srgb, var(--system-color-light) 58%, transparent); backdrop-filter:blur(8px); padding:.5rem .75rem; border-radius:.375rem; box-shadow:hsla(0,0%,0%,.3) 0 1px 5px 2px; color:var(--system-color-light-contrast); font-family:var(--system-font-family); font-size:.9rem; letter-spacing:.4px; display:none; }
+	.tooltip { white-space:nowrap; position:absolute; bottom:3.65rem; left:50%; transform:translateX(-50%); background:color-mix(in srgb, var(--system-color-light) 58%, transparent); backdrop-filter:blur(8px); padding:.5rem .75rem; border-radius:.375rem; box-shadow:hsla(0,0%,0%,.3) 0 1px 5px 2px; color:var(--system-color-light-contrast); font-family:var(--system-font-family); font-size:.85rem; letter-spacing:.2px; display:none; }
 	.tooltip.dark { color:var(--system-color-dark); }
 	.dot { height:4px; width:4px; margin:0; border-radius:50%; background:var(--system-color-dark); opacity:var(--opacity); }
-	.pwa-badge { position:absolute; top:1px; right:-1px; background:rgba(248,58,58,.85); border-radius:50%; pointer-events:none; width:1.5rem; height:1.5rem; text-align:center; color:#fff; font-size:1rem; line-height:1.5; }
+	.pwa-badge { position:absolute; top:0; right:-2px; background:#f83a3a; border-radius:50%; width:1.25rem; height:1.25rem; text-align:center; color:#fff; font-size:.8rem; line-height:1.25rem; }
 </style>
