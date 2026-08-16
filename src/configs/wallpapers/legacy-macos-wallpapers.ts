@@ -1,3 +1,5 @@
+import { wallpapers_config } from './wallpaper.config.ts';
+
 const base = ['https','512pixels.net'].join('://');
 export const legacy_macos_wallpapers = {
 	'legacy-cheetah': { name: 'Mac OS X Cheetah 10.0', image: `${base}/downloads/macos-wallpapers/10-0_10.1.png` },
@@ -19,3 +21,12 @@ export const legacy_macos_wallpapers = {
 	'legacy-catalina-light': { name: 'macOS Catalina 10.15 — Light', image: `${base}/downloads/macos-wallpapers/10-15-beta-light.jpg` },
 	'legacy-catalina-dark': { name: 'macOS Catalina 10.15 — Dark', image: `${base}/downloads/macos-wallpapers/10-15-beta-dark.jpg` },
 } as const;
+
+for (const [id, wallpaper] of Object.entries(legacy_macos_wallpapers)) {
+	(wallpapers_config as Record<string, any>)[id] = {
+		name: wallpaper.name,
+		type: 'standalone',
+		thumbnail: wallpaper.image,
+		image: wallpaper.image,
+	};
+}
