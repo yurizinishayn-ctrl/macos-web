@@ -8,6 +8,7 @@ export const apps_config = {
 	notes: { id: 'notes', title: 'Notes', icon: 'notes', disabled: false, faded: false, showInDock: true, showInAppStore: true, should_open_window: true, height: 620, width: 760 },
 	terminal: { id: 'terminal', title: 'Terminal', icon: 'terminal', disabled: false, faded: false, showInDock: true, showInAppStore: true, should_open_window: true, height: 520, width: 780 },
 	'system-preferences': { id: 'system-preferences', title: 'System Settings', icon: 'system-preferences', disabled: false, faded: false, showInDock: true, showInAppStore: false, should_open_window: true, height: 620, width: 780 },
+	wallpapers: { id: 'wallpapers', title: 'Wallpapers', icon: 'wallpapers', disabled: false, faded: false, showInDock: true, showInAppStore: false, should_open_window: true, height: 680, width: 980 },
 	vscode: { id: 'vscode', title: 'VS Code', icon: 'vscode', disabled: false, faded: false, showInDock: true, showInAppStore: true, should_open_window: true, height: 650, width: 1000 },
 	appstore: { id: 'appstore', title: 'App Store', icon: 'appstore', disabled: false, faded: false, showInDock: true, showInAppStore: false, should_open_window: true, height: 600, width: 820 },
 };
