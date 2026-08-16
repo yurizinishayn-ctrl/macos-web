@@ -1,4 +1,4 @@
-import type { apps_config } from '🍎/configs/apps/apps-config';
+import { apps_config } from '🍎/configs/apps/apps-config';
 
 export type AppID = keyof typeof apps_config;
 
