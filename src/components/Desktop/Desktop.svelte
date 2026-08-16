@@ -7,6 +7,7 @@
 	import SystemUpdate from './SystemUpdate.svelte';
 	import WindowsArea from './Window/WindowsArea.svelte';
 	import SystemFeatures from '../SystemUI/SystemFeatures.svelte';
+	import FinderDockIconFix from '../SystemUI/FinderDockIconFix.svelte';
 
 	const isMac = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 
@@ -32,6 +33,7 @@
 	</main>
 
 	<SystemFeatures />
+	<FinderDockIconFix />
 	<BootupScreen />
 	<SystemUpdate />
 
