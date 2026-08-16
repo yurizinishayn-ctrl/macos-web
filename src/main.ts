@@ -33,9 +33,7 @@ if (!target) {
 
 try {
 	const { default: Desktop } = await import('./components/Desktop/Desktop.svelte');
-	const desktop = mount(Desktop, { target });
-	export default desktop;
+	mount(Desktop, { target });
 } catch (error) {
 	showStartupError(error);
-	export default undefined;
 }
