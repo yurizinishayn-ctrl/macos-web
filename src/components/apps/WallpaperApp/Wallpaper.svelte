@@ -10,6 +10,13 @@
 	const interval = create_interval(5 * 1000);
 
 	$effect(() => {
+		const selectedImage = preferences.wallpaper.image;
+		if (selectedImage && selectedImage !== visible_background_image) {
+			untrack(() => (visible_background_image = selectedImage));
+		}
+	});
+
+	$effect(() => {
 		interval.value;
 		const currentWallpaper = wallpapers_config[preferences.wallpaper.id];
 		if (!currentWallpaper) return;
@@ -63,13 +70,7 @@
 		const chosen = smaller_closest_value(timestamps.map(String), hour).toString();
 		preferences.theme.scheme = map[Number(chosen)] ?? 'light';
 	}
-
-	function previewImageOnLoad() {
-		visible_background_image = preferences.wallpaper.image || wallpapers_config.ventura.image || '';
-	}
 </script>
-
-<img src={preferences.wallpaper.image || wallpapers_config.ventura.image || ''} aria-hidden="true" alt="" onload={previewImageOnLoad} />
 
 <div
 	class="background-cover"
@@ -78,8 +79,6 @@
 ></div>
 
 <style>
-	img { display: none; }
-
 	.background-cover {
 		height: 100%;
 		width: 100%;
