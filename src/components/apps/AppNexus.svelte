@@ -6,6 +6,8 @@
 
 {#if app_id === 'finder'}
 	{#await import('./Finder/Finder.svelte') then { default: Finder }}<Finder />{/await}
+{:else if app_id === 'safari'}
+	{#await import('./Safari/Safari.svelte') then { default: Safari }}<Safari />{/await}
 {:else if app_id === 'calendar'}
 	{#await import('./Calendar/Calendar.svelte') then { default: Calendar }}<Calendar />{/await}
 {:else if app_id === 'notes'}
@@ -22,6 +24,8 @@
 	{#await import('./WallpaperApp/WallpaperSelectorApp.svelte') then { default: WallpaperSelector }}<WallpaperSelector />{/await}
 {:else if app_id === 'purus-twitter'}
 	{#await import('./PurusProfile/PurusProfile.svelte') then { default: PurusProfile }}<PurusProfile />{/await}
+{:else if app_id === 'appstore'}
+	{#await import('./AppStore/AppStore.svelte') then { default: AppStore }}<AppStore {app_id} />{/await}
 {:else}
 	{#await import('./AppStore/AppStore.svelte') then { default: AppStore }}<AppStore {app_id} />{/await}
 {/if}
