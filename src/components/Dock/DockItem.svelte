@@ -57,7 +57,28 @@
 	<p class="tooltip" class:tooltip-enabled={!apps.is_being_dragged} class:dark={preferences.theme.scheme === 'dark'} use:elevation={'dock-tooltip'}>{title}</p>
 	<span bind:this={icon_el} class="icon-shell" style:width="{$width_px / 16}rem" style:height="{$width_px / 16}rem" style:transform="translate(0, {$appOpenIconBounceTransform}px)">
 		{#if app_id === 'finder'}
-			<svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="finder-icon" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#76dcff"/><stop offset=".5" stop-color="#58a9ff"/><stop offset="1" stop-color="#2c63ff"/></linearGradient></defs><rect x="2" y="2" width="60" height="60" rx="16" fill="url(#finder-icon)"/><path d="M32 3v58" stroke="#fff" stroke-opacity=".35"/><circle cx="24" cy="29" r="2.5" fill="#12346f"/><circle cx="40" cy="29" r="2.5" fill="#12346f"/><path d="M18 28c3-3 7-3 11 0M35 28c4-3 8-3 11 0M19 41c7 6 19 6 26 0" fill="none" stroke="#12346f" stroke-width="3" stroke-linecap="round"/><path d="M4 18h56" stroke="#fff" stroke-opacity=".14"/></svg>
+			<svg viewBox="0 0 64 64" aria-hidden="true">
+				<defs>
+					<linearGradient id="finder-face" x1="0" y1="0" x2="1" y2="1">
+						<stop stop-color="#8fe8ff"/>
+						<stop offset=".48" stop-color="#4fb9ff"/>
+						<stop offset="1" stop-color="#2871e8"/>
+					</linearGradient>
+					<linearGradient id="finder-shine" x1="0" y1="0" x2="0" y2="1">
+						<stop stop-color="#fff" stop-opacity=".55"/>
+						<stop offset="1" stop-color="#fff" stop-opacity="0"/>
+					</linearGradient>
+				</defs>
+				<rect x="3" y="3" width="58" height="58" rx="17" fill="url(#finder-face)"/>
+				<path d="M32 3v58" stroke="#fff" stroke-opacity=".32" stroke-width="1.2"/>
+				<path d="M12 30c2.4-7.4 7.5-11.5 14.2-12.6 1.8-.3 3.6-.4 5.8-.4 2.2 0 4 .1 5.8.4C44.5 18.5 49.6 22.6 52 30c-2.2 11.3-9.2 20-20 21-10.8-1-17.8-9.7-20-21Z" fill="url(#finder-shine)" opacity=".34"/>
+				<path d="M20 29c2.9-2.8 6.2-2.8 9.1-.1M34.9 28.9c2.9-2.7 6.2-2.7 9.1.1" fill="none" stroke="#12345f" stroke-width="2.8" stroke-linecap="round"/>
+				<ellipse cx="24.7" cy="30" rx="2.1" ry="2.5" fill="#12345f"/>
+				<ellipse cx="39.3" cy="30" rx="2.1" ry="2.5" fill="#12345f"/>
+				<path d="M32 31.5c-1 3.1-1.3 6.8-.6 9.3" fill="none" stroke="#12345f" stroke-width="2.4" stroke-linecap="round"/>
+				<path d="M18.8 42.1c3.8 3.8 9 5.4 13.2 5.4 4.2 0 9.4-1.6 13.2-5.4" fill="none" stroke="#12345f" stroke-width="2.8" stroke-linecap="round"/>
+				<path d="M8 16c7-7 14-10 24-10s17 3 24 10" fill="none" stroke="#fff" stroke-opacity=".15" stroke-width="2"/>
+			</svg>
 		{:else if app_id === 'safari'}
 			<svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="safari-icon" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a3ecff"/><stop offset="1" stop-color="#4a91ff"/></linearGradient></defs><circle cx="32" cy="32" r="30" fill="url(#safari-icon)" stroke="#fff" stroke-opacity=".7" stroke-width="2"/><circle cx="32" cy="32" r="23.5" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1.5"/><path d="M36.8 13.8 33.8 33.8 14.7 45.4l12.4-18.8Z" fill="#fff" opacity=".94"/><path d="m36.8 13.8-3 20-19.1 11.6 13.2-18.8Z" fill="#ff5b4d"/></svg>
 		{:else if app_id === 'calculator'}
