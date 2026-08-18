@@ -1,17 +1,18 @@
 <script lang="ts">
 	import { wallpapers_config, type WallpaperID } from '🍎/configs/wallpapers/wallpaper.config.ts';
+	import '🍎/configs/wallpapers/legacy-macos-wallpapers.ts';
+	import { legacy_macos_wallpapers } from '🍎/configs/wallpapers/legacy-macos-wallpapers.ts';
 	import { preferences } from '🍎/state/preferences.svelte.ts';
 
 	const dynamic_wallpapers = Object.entries(wallpapers_config).filter(([, { type }]) => type === 'dynamic');
-	const standalone_wallpapers = Object.entries(wallpapers_config).filter(([, { type }]) => type === 'standalone');
+	const legacy_wallpapers = Object.entries(legacy_macos_wallpapers);
+	const standalone_wallpapers = Object.entries(wallpapers_config).filter(([id, { type }]) => type === 'standalone' && !(id in legacy_macos_wallpapers));
 	const current_wallpaper_thumb = $derived(`url(${preferences.wallpaper.image})`);
 
-	function change_wallpaper(wallpaperName: WallpaperID) {
-		const selected = wallpapers_config[wallpaperName];
+	function change_wallpaper(wallpaperName: WallpaperID | keyof typeof legacy_macos_wallpapers) {
+		const selected = wallpapers_config[wallpaperName as WallpaperID] ?? legacy_macos_wallpapers[wallpaperName as keyof typeof legacy_macos_wallpapers];
 		if (!selected) return;
-		preferences.wallpaper.id = wallpaperName;
-		// Apply the selected preview immediately; dynamic wallpaper automation may
-		// update it later according to its time-of-day schedule.
+		preferences.wallpaper.id = wallpaperName as WallpaperID;
 		if (selected.image) preferences.wallpaper.image = selected.image;
 	}
 
@@ -31,14 +32,8 @@
 		<section class="selected-wallpaper-section">
 			<div class="image" style:background-image={current_wallpaper_thumb}></div>
 			<div class="info">
-				<h2>{wallpapers_config[preferences.wallpaper.id]?.name ?? 'Wallpaper'}</h2>
+				<h2>{wallpapers_config[preferences.wallpaper.id]?.name ?? legacy_macos_wallpapers[preferences.wallpaper.id as keyof typeof legacy_macos_wallpapers]?.name ?? 'Wallpaper'}</h2>
 				<p class="wallpaper-type">{wallpapers_config[preferences.wallpaper.id]?.type ?? 'standalone'} wallpaper</p>
-				{#if wallpapers_config[preferences.wallpaper.id]?.type === 'dynamic'}
-					<label>
-						<input type="checkbox" bind:checked={preferences.wallpaper.canControlTheme} />
-						Change dark/light mode as wallpapers change
-					</label>
-				{/if}
 			</div>
 		</section>
 
@@ -56,8 +51,22 @@
 			</div>
 		</section>
 
+		<section class="legacy-wallpapers">
+			<h2>Classic Mac OS X</h2>
+			<div class="wallpapers">
+				{#each legacy_wallpapers as [id, wallpaper]}
+					<div class="wallpaper-button">
+						<button onclick={() => change_wallpaper(id as keyof typeof legacy_macos_wallpapers)} onpointerenter={() => preload(wallpaper.image)}>
+							<img src={wallpaper.image} alt={wallpaper.name} loading="lazy" />
+						</button>
+						<p>{wallpaper.name}</p>
+					</div>
+				{/each}
+			</div>
+		</section>
+
 		<section class="standalone-wallpapers">
-			<h2>Standalone Wallpapers</h2>
+			<h2>Other Wallpapers</h2>
 			<div class="wallpapers">
 				{#each standalone_wallpapers as [id, { thumbnail, name, image }]}
 					<div class="wallpaper-button">
@@ -81,10 +90,9 @@
 	.selected-wallpaper-section{display:grid;grid-template-columns:minmax(0,30rem);gap:1rem;width:min(100%,30rem)}
 	.image{width:100%;aspect-ratio:16/10;border-radius:1rem;background-repeat:no-repeat;background-size:cover;background-position:center;box-shadow:0 12px 30px rgba(0,0,0,.16);transition:background-image 180ms ease}
 	.info{display:flex;flex-direction:column;gap:.35rem}.info h2{margin:0}.wallpaper-type{margin:0;color:hsla(var(--system-color-dark-hsl),.7);text-transform:capitalize}
-	label{display:flex;align-items:center;gap:.5rem;margin-top:.75rem;font-size:.86rem}input{height:1.1rem;width:1.1rem;accent-color:var(--system-color-primary)}
-	.dynamic-wallpapers,.standalone-wallpapers{width:min(100%,54rem)}
+	.dynamic-wallpapers,.legacy-wallpapers,.standalone-wallpapers{width:min(100%,54rem)}
 	.wallpapers{display:grid;grid-template-columns:repeat(auto-fit,minmax(10rem,1fr));gap:1rem}
-	.standalone-wallpapers .wallpapers{grid-template-columns:repeat(auto-fit,minmax(13rem,1fr))}
+	.standalone-wallpapers .wallpapers,.legacy-wallpapers .wallpapers{grid-template-columns:repeat(auto-fit,minmax(13rem,1fr))}
 	.wallpaper-button{display:flex;flex-direction:column;gap:.45rem}.wallpaper-button button{width:100%;aspect-ratio:16/10;padding:0;border:0;background:transparent;border-radius:.8rem;overflow:hidden}.wallpaper-button button:hover img,.wallpaper-button button:focus-visible img{box-shadow:0 0 0 .22rem color-mix(in srgb,var(--system-color-primary) 72%,transparent)}
 	.wallpaper-button img{width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block;transition:box-shadow 100ms ease}.wallpaper-button p{margin:0;text-align:center;font-size:.8rem;opacity:.8}
 </style>
