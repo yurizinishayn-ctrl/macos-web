@@ -1,159 +1,24 @@
 <script lang="ts">
-	let launcherOpen = false;
-	let quickOpen = false;
-	let notificationsOpen = false;
-	let search = '';
-	let wifi = true;
-	let bluetooth = true;
-	let dark = false;
-	let volume = 72;
-	let brightness = 80;
-	type WindowName = 'browser' | 'files' | 'settings' | 'terminal' | 'about';
-	let windows: WindowName[] = [];
-	let active: WindowName | null = null;
-	let minimized: WindowName[] = [];
-
-	const apps: { id: WindowName; name: string; icon: string; color: string }[] = [
-		{ id: 'browser', name: 'Chrome', icon: '🌐', color: '#4285f4' },
-		{ id: 'files', name: 'Arquivos', icon: '📁', color: '#f9ab00' },
-		{ id: 'settings', name: 'Configurações', icon: '⚙️', color: '#5f6368' },
-		{ id: 'terminal', name: 'Terminal', icon: '›_', color: '#202124' },
-		{ id: 'about', name: 'Sobre', icon: 'ℹ️', color: '#1a73e8' }
-	];
-
-	function openApp(id: WindowName) {
-		if (!windows.includes(id)) windows = [...windows, id];
-		minimized = minimized.filter((x) => x !== id);
-		active = id;
-		launcherOpen = false;
-	}
-
-	function closeApp(id: WindowName) {
-		windows = windows.filter((x) => x !== id);
-		minimized = minimized.filter((x) => x !== id);
-		if (active === id) active = windows.at(-1) ?? null;
-	}
-
-	function minimizeApp(id: WindowName) {
-		if (!minimized.includes(id)) minimized = [...minimized, id];
-		if (active === id) active = windows.filter((x) => x !== id && !minimized.includes(x)).at(-1) ?? null;
-	}
-
-	function restoreApp(id: WindowName) {
-		minimized = minimized.filter((x) => x !== id);
-		active = id;
-	}
-
-	$: filteredApps = apps.filter((app) => app.name.toLowerCase().includes(search.toLowerCase()));
-	$: now = new Date();
-	$: time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-	$: date = now.toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: 'short' });
+ import { onMount } from 'svelte';
+ type App='chrome'|'files'|'settings'|'terminal'|'about';
+ const apps=[{id:'chrome' as App,name:'Chrome',icon:'🌐',color:'#4285f4'},{id:'files' as App,name:'Arquivos',icon:'📁',color:'#fbbc04'},{id:'settings' as App,name:'Configurações',icon:'⚙️',color:'#5f6368'},{id:'terminal' as App,name:'Terminal',icon:'›_',color:'#202124'},{id:'about' as App,name:'Sobre',icon:'ℹ️',color:'#1a73e8'}];
+ let locked=true,launcher=false,quick=false,notify=false,dark=false,wifi=true,bluetooth=true,search='',active:App|null=null,minimized:App[]=[]; let volume=72,brightness=80,time='',date='';
+ $: filtered=apps.filter(a=>a.name.toLowerCase().includes(search.toLowerCase()));
+ function openApp(id:App){active=id;minimized=minimized.filter(x=>x!==id);launcher=false;quick=false}
+ function close(){active=null}
+ function minimize(){if(active&&!minimized.includes(active))minimized=[...minimized,active];active=null}
+ function lock(){locked=!locked;launcher=quick=notify=false}
+ onMount(()=>{const saved=localStorage.getItem('chromeos-web');if(saved){try{Object.assign({},{})}catch{}} const tick=()=>{const d=new Date();time=d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});date=d.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short'})};tick();const t=setInterval(tick,1000);return()=>clearInterval(t)});
 </script>
-
-<svelte:window on:keydown={(e) => { if (e.key === 'Escape') { launcherOpen = false; quickOpen = false; notificationsOpen = false; } }} />
-
-<div class:dark class="chromeos">
-	<div class="wallpaper"></div>
-	<div class="desktop" on:click={() => { launcherOpen = false; quickOpen = false; notificationsOpen = false; }}>
-		<div class="desktop-brand"><span class="chrome-logo">●</span><span>ChromeOS</span></div>
-		<div class="desktop-hint">Tudo o que você precisa, direto no navegador.</div>
-
-		{#each windows as id}
-			{#if active === id && !minimized.includes(id)}
-				<div class="window" class:browser-window={id === 'browser'} on:click|stopPropagation={() => active = id}>
-					<div class="titlebar">
-						<div class="traffic"><button aria-label="Fechar" on:click={() => closeApp(id)} class="close">×</button><button aria-label="Minimizar" on:click={() => minimizeApp(id)} class="min">−</button><button aria-label="Maximizar" on:click={() => active = id} class="max">□</button></div>
-						<div class="window-title">{apps.find((a) => a.id === id)?.icon} {apps.find((a) => a.id === id)?.name}</div>
-						<div></div>
-					</div>
-					{#if id === 'browser'}
-						<div class="browser-toolbar"><button>←</button><button>→</button><button>↻</button><div class="omnibox">🔒 &nbsp; Pesquisa ou digite um endereço</div><button>⋮</button></div>
-						<div class="browser-page"><div class="google-mark"><span>G</span></div><div class="google-search">Pesquisar na Web <span>⌕</span></div><div class="shortcuts"><button on:click={() => openApp('files')}>📁<small>Arquivos</small></button><button>➕<small>Adicionar atalho</small></button></div></div>
-					{:else if id === 'files'}
-						<div class="files-app"><aside><b>Arquivos</b><span>⌂ Meus arquivos</span><span>☁ Google Drive</span><span>⬇ Downloads</span></aside><section><h2>Meus arquivos</h2><div class="file-grid"><div>📁<small>Downloads</small></div><div>📁<small>Imagens</small></div><div>📁<small>Documentos</small></div><div>📄<small>Bem-vindo.txt</small></div></div></section></div>
-					{:else if id === 'settings'}
-						<div class="settings-app"><aside><h3>Configurações</h3><span>🌐 Rede</span><span>📶 Wi‑Fi</span><span>🎨 Personalização</span><span>🔒 Privacidade e segurança</span><span>ℹ️ Sobre o ChromeOS</span></aside><section><h2>Configurações</h2><label>Wi‑Fi <input type="checkbox" bind:checked={wifi}></label><label>Bluetooth <input type="checkbox" bind:checked={bluetooth}></label><label>Modo escuro <input type="checkbox" bind:checked={dark}></label></section></div>
-					{:else if id === 'terminal'}
-						<div class="terminal"><div>ChromeOS Web Terminal</div><div class="prompt">guest@chromeos:~$ <span>echo "Olá, ChromeOS!"</span></div><div>Olá, ChromeOS!</div><div class="prompt">guest@chromeos:~$ <i>_</i></div></div>
-					{:else}
-						<div class="about"><div class="big-logo">◉</div><h1>ChromeOS Web</h1><p>Uma experiência inspirada no ChromeOS, construída sobre o projeto macOS Web.</p><div class="version">Versão Web 1.0 · Svelte 5 · Vite</div></div>
-					{/if}
-				</div>
-			{/if}
-		{/each}
-	</div>
-
-	{#if launcherOpen}
-		<div class="launcher" on:click|stopPropagation>
-			<div class="launcher-search">🔍<input autofocus bind:value={search} placeholder="Pesquisar apps, arquivos e configurações" /></div>
-			<div class="app-grid">
-				{#each filteredApps as app}<button class="app" on:click={() => openApp(app.id)}><span class="app-icon" style={`background:${app.color}`}>{app.icon}</span><span>{app.name}</span></button>{/each}
-			</div>
-			<div class="launcher-footer"><span>⌕ Pesquisar</span><span>Conta local</span></div>
-		</div>
-	{/if}
-
-	{#if quickOpen}
-		<div class="quick-panel" on:click|stopPropagation>
-			<div class="quick-header"><div><b>Conta local</b><small>ChromeOS Web</small></div><button>⚙</button></div>
-			<div class="toggles"><button class:on={wifi} on:click={() => wifi = !wifi}>📶<span>Wi‑Fi<small>{wifi ? 'Conectado' : 'Desativado'}</small></span></button><button class:on={bluetooth} on:click={() => bluetooth = !bluetooth}>ᛒ<span>Bluetooth<small>{bluetooth ? 'Ativado' : 'Desativado'}</small></span></button></div>
-			<label class="slider">☀ <input type="range" bind:value={brightness} min="0" max="100" /> ☀</label><label class="slider">🔊 <input type="range" bind:value={volume} min="0" max="100" /> 🔊</label>
-			<div class="quick-actions"><button on:click={() => dark = !dark}>{dark ? '☀' : '☾'} {dark ? 'Modo claro' : 'Modo escuro'}</button><button>🔒 Bloquear</button><button>⏻ Desligar</button></div>
-		</div>
-	{/if}
-
-	{#if notificationsOpen}
-		<div class="notifications" on:click|stopPropagation><b>Notificações</b><div class="empty">Tudo em dia 🎉<small>Não há novas notificações.</small></div></div>
-	{/if}
-
-	<div class="shelf">
-		<button class="launcher-btn" aria-label="Abrir launcher" on:click|stopPropagation={() => launcherOpen = !launcherOpen}>◉</button>
-		<div class="pinned">
-			{#each apps.slice(0, 4) as app}<button class:running={windows.includes(app.id)} on:click|stopPropagation={() => openApp(app.id)} title={app.name}><span style={`background:${app.color}`}>{app.icon}</span></button>{/each}
-		</div>
-		<div class="shelf-spacer"></div>
-		<div class="status-area"><button on:click|stopPropagation={() => notificationsOpen = !notificationsOpen}>🔔</button><button class="status" on:click|stopPropagation={() => quickOpen = !quickOpen}><span>📶</span><span>{wifi ? '⌁' : '×'}</span><span>🔋</span><b>{time}</b><small>{date}</small></button></div>
-	</div>
+<svelte:window on:keydown={(e)=>{if(e.key==='Escape'){launcher=quick=notify=false}if((e.ctrlKey||e.metaKey)&&e.key==='l'){e.preventDefault();lock()}}}/>
+<div class="os" class:dark>
+{#if locked}<section class="lock"><div class="lockclock">{time}</div><div class="profile"><div class="avatar">Y</div><h1>Convidado</h1><p>ChromeOS Web</p><button on:click={lock}>Entrar</button></div><small>⌁ Rede conectada　 🔋 100%</small></section>
+{:else}<main class="desktop" on:click={()=>{launcher=quick=notify=false}}><div class="label">ChromeOS Web</div>{#if active}<section class="window" on:click|stopPropagation><header><div class="controls"><button class="r" on:click={close}>×</button><button class="y" on:click={minimize}>−</button><button class="g">□</button></div><b>{apps.find(a=>a.id===active)?.icon} {apps.find(a=>a.id===active)?.name}</b></header>{#if active==='chrome'}<div class="chrome"><div class="tabs"><span>Nova guia　×</span> ＋</div><div class="toolbar">←　→　↻ <div>🔒　Pesquisar ou digitar um endereço</div> ⋮</div><div class="newtab"><strong>G</strong><div class="searchbox">Pesquisar na Web　⌕</div><div class="shortcuts"><button>📁<small>Arquivos</small></button><button>＋<small>Adicionar atalho</small></button></div></div></div>{:else if active==='files'}<div class="files"><aside><h3>Arquivos</h3><span>⌂ Meus arquivos</span><span>☁ Google Drive</span><span>⬇ Downloads</span></aside><article><h2>Meus arquivos</h2><div class="grid"><div>📁<small>Downloads</small></div><div>📁<small>Documentos</small></div><div>📁<small>Imagens</small></div><div>📄<small>Bem-vindo.txt</small></div></div></article></div>{:else if active==='settings'}<div class="settings"><aside><h3>Configurações</h3><span>🌐 Rede</span><span>📶 Wi‑Fi</span><span>🎨 Personalização</span><span>🔒 Privacidade</span></aside><article><h2>Configurações</h2><label>Wi‑Fi <input type="checkbox" bind:checked={wifi}/></label><label>Bluetooth <input type="checkbox" bind:checked={bluetooth}/></label><label>Modo escuro <input type="checkbox" bind:checked={dark}/></label><label>Brilho <input type="range" bind:value={brightness}/></label><label>Volume <input type="range" bind:value={volume}/></label></article></div>{:else if active==='terminal'}<div class="terminal">ChromeOS Web Terminal<br/><br/><span>guest@chromeos:~$</span> echo "Olá, ChromeOS!"<br/>Olá, ChromeOS!<br/><span>guest@chromeos:~$</span> _</div>{:else}<div class="about"><div>◉</div><h1>ChromeOS Web</h1><p>Experiência independente inspirada no ChromeOS.</p><small>Web Edition · Svelte 5 · Vite</small></div>{/if}</section>{/if}</main>
+{#if launcher}<section class="launcher" on:click|stopPropagation><div class="search">🔍 <input autofocus bind:value={search} placeholder="Pesquisar apps, arquivos e configurações"/></div><div class="apps">{#each filtered as a}<button on:click={()=>openApp(a.id)}><i style={`background:${a.color}`}>{a.icon}</i><small>{a.name}</small></button>{/each}</div><footer>⌕ Pesquisa <span>Convidado</span></footer></section>{/if}
+{#if quick}<section class="quick" on:click|stopPropagation><header><b>Convidado</b><button on:click={()=>openApp('settings')}>⚙</button></header><div class="tiles"><button class:on={wifi} on:click={()=>wifi=!wifi}>📶<small>Wi‑Fi<br/>{wifi?'Conectado':'Desativado'}</small></button><button class:on={bluetooth} on:click={()=>bluetooth=!bluetooth}>ᛒ<small>Bluetooth<br/>{bluetooth?'Ativado':'Desativado'}</small></button></div><label>☀ <input type="range" bind:value={brightness}/></label><label>🔊 <input type="range" bind:value={volume}/></label><div class="actions"><button on:click={()=>dark=!dark}>{dark?'☀':'☾'} Tema</button><button on:click={lock}>🔒 Bloquear</button><button on:click={()=>location.reload()}>⟳ Reiniciar</button></div></section>{/if}
+{#if notify}<section class="notify" on:click|stopPropagation><b>Notificações</b><div>🎉<strong>Tudo em dia</strong><small>Não há novas notificações.</small></div></section>{/if}
+<nav class="shelf" on:click|stopPropagation><button class="launcherbtn" on:click={()=>launcher=!launcher}>◉</button><div class="pins">{#each apps.slice(0,4) as a}<button class:running={active===a.id||minimized.includes(a.id)} on:click={()=>openApp(a.id)}><span style={`background:${a.color}`}>{a.icon}</span></button>{/each}</div><span class="spacer"></span><button on:click={()=>notify=!notify}>🔔</button><button class="status" on:click={()=>quick=!quick}>📶 🔋 <b>{time}</b></button></nav>{/if}
 </div>
-
 <style>
-	:global(html, body, #root) { width:100%; height:100%; margin:0; overflow:hidden; }
-	:global(*) { box-sizing:border-box; }
-	.chromeos { width:100%;height:100%;font-family:Arial,'Segoe UI',sans-serif;color:#202124;background:#202124;overflow:hidden;position:relative;user-select:none; }
-	.dark { color:#e8eaed; }
-	.wallpaper { position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,#5f8dd3 0,#3568ae 25%,#183b69 55%,#071c35 100%); }
-	.dark .wallpaper { background:radial-gradient(circle at 75% 25%,#374151,#172033 45%,#090e18 100%); }
-	.desktop { position:absolute;inset:0;padding:34px; }
-	.desktop-brand { color:rgba(255,255,255,.9);font-weight:600;font-size:15px;display:flex;align-items:center;gap:8px;text-shadow:0 1px 4px #0005; }
-	.chrome-logo { display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:conic-gradient(#4285f4 0 25%,#34a853 0 50%,#fbbc05 0 75%,#ea4335 0);color:transparent; }
-	.desktop-hint { color:#fff9;font-size:13px;margin:8px 0 0 28px; }
-	.shelf { position:absolute;z-index:50;left:14px;right:14px;bottom:12px;height:64px;border-radius:20px;background:rgba(246,248,252,.88);backdrop-filter:blur(24px) saturate(1.4);box-shadow:0 8px 30px #0005;border:1px solid #fff8;display:flex;align-items:center;padding:8px;gap:8px; }
-	.dark .shelf { background:rgba(36,40,49,.9);border-color:#ffffff12; }
-	.shelf button { border:0;background:transparent;cursor:pointer;color:inherit; }
-	.launcher-btn { width:48px;height:48px;border-radius:15px;font-size:26px;color:#1a73e8!important;background:#fff8!important; }
-	.pinned { display:flex;gap:4px; }
-	.pinned button { width:48px;height:48px;border-radius:14px;position:relative; }
-	.pinned button:hover { background:#0000000c; }
-	.pinned span { display:grid;place-items:center;width:38px;height:38px;border-radius:11px;margin:auto;font-size:20px;box-shadow:0 2px 5px #0002; }
-	.pinned .running:after { content:'';position:absolute;bottom:2px;left:20px;width:6px;height:3px;border-radius:4px;background:#1a73e8; }
-	.shelf-spacer { flex:1; }
-	.status-area { display:flex;align-items:center;gap:3px; }
-	.status-area>button { height:48px;border-radius:14px;padding:0 10px;font-size:16px; }
-	.status-area>button:hover { background:#0000000c; }
-	.status { display:flex;align-items:center;gap:7px!important; }
-	.status b { font-size:13px;margin-left:4px; }
-	.status small { display:none; }
-	.window { position:absolute;z-index:20;left:50%;top:50%;transform:translate(-50%,-55%);width:min(820px,calc(100vw - 100px));height:min(560px,calc(100vh - 150px));background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 22px 70px #0007;border:1px solid #0002; }
-	.dark .window { background:#202124;color:#e8eaed; }
-	.titlebar { height:48px;display:grid;grid-template-columns:120px 1fr 120px;align-items:center;background:#f8f9fa;border-bottom:1px solid #dadce0; }
-	.dark .titlebar { background:#292a2d;border-color:#3c4043; }
-	.traffic { display:flex;gap:7px;padding-left:14px; }
-	.traffic button { width:13px;height:13px;border-radius:50%;border:0;color:transparent;cursor:pointer; }
-	.traffic .close { background:#ff5f57; }.traffic .min { background:#febc2e; }.traffic .max { background:#28c840; }
-	.window-title { text-align:center;font-size:13px;font-weight:500; }
-	.browser-toolbar { height:52px;display:flex;align-items:center;gap:6px;padding:7px 12px;background:#fff;border-bottom:1px solid #eee; }.dark .browser-toolbar{background:#292a2d;border-color:#3c4043}.browser-toolbar button{border:0;background:transparent;font-size:20px;padding:8px;cursor:pointer}.omnibox{flex:1;background:#f1f3f4;border-radius:24px;padding:10px 16px;font-size:13px;color:#5f6368}.dark .omnibox{background:#3c4043;color:#bdc1c6}
-	.browser-page{height:calc(100% - 100px);display:flex;flex-direction:column;align-items:center;padding-top:95px;background:#fff}.dark .browser-page{background:#202124}.google-mark{font-size:72px;font-weight:600;margin-bottom:24px}.google-mark span{background:linear-gradient(90deg,#4285f4 25%,#34a853 25% 50%,#fbbc05 50% 75%,#ea4335 75%);background-clip:text;color:transparent}.google-search{width:min(580px,80%);border:1px solid #dfe1e5;border-radius:28px;padding:14px 20px;color:#777;box-shadow:0 1px 6px #0001}.shortcuts{display:flex;gap:15px;margin-top:28px}.shortcuts button{border:0;background:transparent;padding:15px;border-radius:10px;display:flex;flex-direction:column;gap:8px;align-items:center}.shortcuts button:hover{background:#f1f3f4}.shortcuts small{font-size:12px}
-	.files-app,.settings-app{height:calc(100% - 48px);display:grid;grid-template-columns:190px 1fr}.files-app aside,.settings-app aside{background:#f8f9fa;padding:20px;display:flex;flex-direction:column;gap:12px}.dark .files-app aside,.dark .settings-app aside{background:#292a2d}.files-app aside span,.settings-app aside span{padding:8px;border-radius:8px;font-size:13px}.files-app aside span:hover,.settings-app aside span:hover{background:#e8eaed}.files-app section,.settings-app section{padding:28px}.file-grid{display:grid;grid-template-columns:repeat(4,110px);gap:25px}.file-grid div{display:flex;flex-direction:column;align-items:center;gap:10px;padding:12px;border-radius:10px;font-size:35px}.file-grid div:hover{background:#f1f3f4}.file-grid small{font-size:12px}.settings-app label{display:flex;justify-content:space-between;padding:18px;border-bottom:1px solid #eee}.terminal{height:calc(100% - 48px);background:#111;color:#ddd;padding:24px;font:14px/2 ui-monospace,monospace}.prompt{color:#8ab4f8}.prompt span{color:#a5d6a7}.about{text-align:center;padding:70px 30px}.big-logo{font-size:80px;color:#1a73e8}.about h1{font-size:30px}.about p{color:#6b7280}.version{font-size:12px;color:#9aa0a6}
-	.launcher,.quick-panel,.notifications{position:absolute;z-index:100;bottom:88px;background:rgba(248,249,250,.96);backdrop-filter:blur(28px);box-shadow:0 12px 45px #0005;border:1px solid #fff;border-radius:22px;color:#202124}.dark .launcher,.dark .quick-panel,.dark .notifications{background:rgba(41,42,45,.97);border-color:#ffffff12;color:#e8eaed}.launcher{left:50%;transform:translateX(-50%);width:min(680px,calc(100vw - 40px));padding:18px}.launcher-search{height:48px;border-radius:24px;background:#fff;display:flex;align-items:center;gap:10px;padding:0 18px;box-shadow:0 1px 5px #0002}.dark .launcher-search{background:#3c4043}.launcher-search input{border:0;outline:0;background:transparent;flex:1;font-size:15px;color:inherit}.app-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:18px}.app{border:0;background:transparent;color:inherit;border-radius:14px;padding:14px 5px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;font-size:12px}.app:hover{background:#0000000c}.app-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:24px;box-shadow:0 2px 6px #0002}.launcher-footer{border-top:1px solid #ddd;margin-top:12px;padding:12px 4px 0;display:flex;justify-content:space-between;color:#5f6368;font-size:12px}.quick-panel{right:18px;width:340px;padding:18px}.quick-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.quick-header small{display:block;color:#777;margin-top:4px}.quick-header button{border:0;background:transparent;font-size:20px}.toggles{display:grid;grid-template-columns:1fr 1fr;gap:8px}.toggles button{border:0;border-radius:14px;background:#e8eaed;padding:14px;display:flex;gap:10px;text-align:left;align-items:center;cursor:pointer}.dark .toggles button{background:#3c4043;color:#e8eaed}.toggles button.on{background:#d2e3fc;color:#174ea6}.toggles small{display:block;font-size:11px;margin-top:3px;color:#5f6368}.slider{display:flex;gap:10px;align-items:center;margin:17px 2px}.slider input{flex:1}.quick-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}.quick-actions button{border:0;background:#e8eaed;border-radius:12px;padding:10px 5px;font-size:11px;cursor:pointer}.dark .quick-actions button{background:#3c4043;color:#eee}.notifications{right:18px;width:310px;padding:18px}.empty{margin-top:16px;background:#fff8;padding:30px;text-align:center;border-radius:15px;color:#777}.dark .empty{background:#ffffff08}.empty small{display:block;margin-top:7px}
-	@media(max-width:650px){.desktop-hint{display:none}.window{width:calc(100vw - 24px);height:calc(100vh - 105px);top:45%;}.app-grid{grid-template-columns:repeat(4,1fr)}.status-area>button:first-child{display:none}.status b{display:none}.quick-panel{right:10px;left:10px;width:auto}.launcher{width:calc(100vw - 20px);bottom:82px}.shelf{left:6px;right:6px}.pinned button:nth-child(n+4){display:none}}
+:global(html,body,#root){margin:0;width:100%;height:100%;overflow:hidden}*{box-sizing:border-box}.os{width:100%;height:100%;font-family:Arial,'Segoe UI',sans-serif;background:#09213e;color:#202124}.dark{color:#e8eaed}.lock{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(circle at 25% 20%,#73a1dd,#275b94 45%,#06172b);color:#fff;text-align:center}.lockclock{position:absolute;top:30px;font-size:20px}.profile{display:flex;flex-direction:column;align-items:center}.avatar{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#1a73e8;font-size:40px;font-weight:bold}.profile h1{margin:15px 0 3px}.profile p{margin:0 0 18px;opacity:.75}.profile button{border:0;border-radius:22px;padding:11px 30px;font-weight:bold;color:#174ea6;background:#fff}.lock>small{position:absolute;bottom:28px;opacity:.7}.desktop{position:absolute;inset:0;background:radial-gradient(circle at 25% 20%,#5d8dce,#315f99 40%,#0a2748 75%,#06182c)}.dark .desktop{background:radial-gradient(circle at 75% 20%,#3b4b61,#182434 45%,#080f19)}.label{position:absolute;top:25px;left:28px;color:#fff9;font-weight:600}.shelf{position:absolute;z-index:50;left:12px;right:12px;bottom:12px;height:64px;border-radius:20px;background:#f8f9fae8;backdrop-filter:blur(25px);display:flex;align-items:center;padding:7px;gap:4px;box-shadow:0 8px 30px #0006}.dark .shelf{background:#292a2de8}.shelf button{border:0;background:transparent;color:inherit;border-radius:14px;height:50px;min-width:50px;font-size:20px}.launcherbtn{font-size:28px!important;color:#1a73e8!important}.pins{display:flex}.pins span{display:grid;place-items:center;width:38px;height:38px;border-radius:11px;margin:auto}.pins button.running:after{content:'';display:block;width:6px;height:3px;background:#1a73e8;border-radius:3px;margin:auto}.spacer{flex:1}.status{font-size:13px!important}.window{position:absolute;z-index:20;left:50%;top:47%;transform:translate(-50%,-50%);width:min(900px,calc(100% - 40px));height:min(600px,calc(100% - 120px));background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 25px 80px #0008}.dark .window{background:#202124;color:#e8eaed}.window>header{height:48px;background:#f8f9fa;border-bottom:1px solid #ddd;display:flex;align-items:center;justify-content:center;position:relative}.dark .window>header{background:#292a2d;border-color:#3c4043}.controls{position:absolute;left:14px;display:flex;gap:7px}.controls button{width:13px;height:13px;border:0;border-radius:50%;color:transparent}.r{background:#ff5f57}.y{background:#febc2e}.g{background:#28c840}.tabs{height:38px;background:#dee1e6;padding:10px}.tabs span{background:#fff;padding:9px 20px;border-radius:9px 9px 0 0;font-size:12px}.toolbar{height:50px;display:flex;align-items:center;gap:8px;padding:6px 12px}.toolbar div{flex:1;background:#f1f3f4;border-radius:25px;padding:11px 16px;color:#777;font-size:13px}.newtab{display:flex;flex-direction:column;align-items:center;padding-top:70px}.newtab strong{font-size:72px;background:linear-gradient(90deg,#4285f4,#34a853,#fbbc05,#ea4335);background-clip:text;color:transparent}.searchbox{width:65%;border:1px solid #ddd;border-radius:28px;padding:14px 20px;color:#777}.shortcuts{display:flex;gap:15px;margin-top:25px}.shortcuts button{border:0;background:transparent;padding:15px;display:flex;flex-direction:column;gap:7px}.files,.settings{height:calc(100% - 48px);display:grid;grid-template-columns:190px 1fr}.files aside,.settings aside{padding:20px;background:#f8f9fa;display:flex;flex-direction:column;gap:8px}.dark .files aside,.dark .settings aside{background:#292a2d}.files aside span,.settings aside span{padding:9px}.files article,.settings article{padding:25px}.grid{display:flex;gap:20px}.grid div{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:35px;padding:15px}.grid small{font-size:12px}.settings label{display:flex;justify-content:space-between;padding:18px;border-bottom:1px solid #ddd}.terminal{height:calc(100% - 48px);padding:25px;background:#111;color:#ddd;font:14px/2 monospace}.terminal span{color:#8ab4f8}.about{text-align:center;padding:80px}.about div{font-size:80px;color:#1a73e8}.launcher,.quick,.notify{position:absolute;z-index:100;background:#f8f9faf5;backdrop-filter:blur(25px);border:1px solid #fff;border-radius:22px;box-shadow:0 15px 50px #0006}.dark .launcher,.dark .quick,.dark .notify{background:#292a2df7;color:#fff}.launcher{width:min(700px,calc(100% - 30px));left:50%;bottom:88px;transform:translateX(-50%);padding:18px}.search{height:50px;border-radius:26px;background:#fff;display:flex;align-items:center;padding:0 16px}.dark .search{background:#3c4043}.search input{flex:1;border:0;outline:0;background:transparent;color:inherit;font-size:15px}.apps{display:grid;grid-template-columns:repeat(5,1fr);margin-top:12px}.apps button{border:0;background:transparent;color:inherit;padding:15px;border-radius:13px;display:flex;flex-direction:column;align-items:center;gap:8px}.apps i{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-style:normal;font-size:25px}.launcher footer{display:flex;justify-content:space-between;border-top:1px solid #ddd;margin-top:8px;padding:10px;font-size:12px}.quick{right:18px;bottom:88px;width:360px;padding:18px}.quick header{display:flex;justify-content:space-between}.quick header button{border:0;background:transparent;font-size:20px}.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:15px 0}.tiles button{border:0;border-radius:13px;padding:12px;text-align:left;background:#e8eaed}.dark .tiles button{background:#3c4043;color:#fff}.tiles button.on{background:#d2e3fc;color:#174ea6}.tiles small{display:block;margin-top:5px}.quick label{display:flex;gap:8px;margin:15px 0}.quick label input{flex:1}.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.actions button{border:0;border-radius:12px;padding:10px;font-size:11px}.notify{right:18px;bottom:88px;width:320px;padding:18px}.notify div{margin-top:15px;padding:25px;background:#fff8;border-radius:14px;text-align:center}.notify strong,.notify small{display:block;margin-top:7px}@media(max-width:650px){.window{width:calc(100% - 20px);height:calc(100% - 120px)}.apps{grid-template-columns:repeat(4,1fr)}.quick{left:10px;right:10px;width:auto}.pins button:nth-child(n+4){display:none}}
 </style>
